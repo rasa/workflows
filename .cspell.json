@@ -1,5 +1,15 @@
 {
     "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+    "dictionaries": [
+        "linter-words"
+    ],
+    "dictionaryDefinitions": [
+        {
+            "addWords": true,
+            "name": "linter-words",
+            "path": "./.github/linters/cspell-ignore.txt"
+        }        
+    ],
     "version": "0.2",
     "language": "en",
     "ignorePaths": [
