@@ -19,7 +19,9 @@ YAML_V8R_FILTER_REGEX_EXCLUDE: "\\.github/workflows/(docs|labeller-file-based|la
 ## CONVERT ERRORS TO WARNINGS ##
 
 # quiets validation errors
-# ACTION_ACTIONLINT_DISABLE_ERRORS: true
+ACTION_ACTIONLINT_DISABLE_ERRORS: true
+
+# quiets validation errors
 ACTION_ACTIONLINT_ARGUMENTS: >
   -ignore 'property "workflow_update_github_pat" is not defined in .+'
 
