@@ -34,6 +34,11 @@ PYTHON_BANDIT_DISABLE_ERRORS: true
 # PYTHON_BANDIT_ARGUMENTS: "--skip B101,B404,B603"
 
 # quiets validation errors
+PYTHON_MYPY_DISABLE_ERRORS: true
+# or quiet completely:
+# PYTHON_MYPY_ARGUMENTS: "--ignore-missing-imports"
+
+# quiets validation errors
 PYTHON_PYLINT_DISABLE_ERRORS: true
 # or quiet completely:
 # PYTHON_PYLINT_ARGUMENTS: "--disable import-error"
