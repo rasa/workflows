@@ -39,5 +39,9 @@
   ],
   "retryOn429": true,
   "retryCount": 5,
-  "aliveStatusCodes": [200, 206, 405]
+  "aliveStatusCodes": [
+    200,
+    206,
+    405
+  ]
 }
