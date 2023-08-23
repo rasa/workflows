@@ -1,0 +1,5 @@
+[flake8]
+# quiets: https://github.com/rasa/workflows/actions/runs/5944405268/job/16121614165#step:5:1952
+#  .github/update_changelog.py:43:89: E501 line too long (89 > 88 characters)
+#  .github/update_changelog.py:50:89: E501 line too long (89 > 88 characters)
+max-line-length = 90

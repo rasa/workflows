@@ -1,0 +1,295 @@
+---
+# $schema https://json.schemastore.org/github-workflow.json
+# ./.github/workflows/debug-matrix.yaml
+# https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#preinstalled-software
+# yamllint disable rule:line-length
+
+name: debug-matrix
+
+"on": # quotes required to quiet linter
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - master
+  #     - releases/v*
+  # push:
+  #   branches:
+  #     - main
+  #     - master
+  #     - releases/v*
+  workflow_call: # Required so this workflow can be called from another workflow
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+  debug-matrix:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash --noprofile --norc -e -o pipefail -v -x {0}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#choosing-github-hosted-runners
+      matrix:
+        os:
+          - ubuntu-latest # aka ubuntu-22.04
+          - windows-latest # aka windows-2022
+          - macos-latest # aka macos-12
+          # - ubuntu-20.04
+          # - windows-2019
+          # - macos-11
+          # - ubuntu-18.04 # deprecated
+          # - macos-10.5 # deprecated
+    steps:
+      - name: USES crazy-max/ghaction-dump-context@v2.1.0
+        uses: crazy-max/ghaction-dump-context@v2.1.0
+      - if: runner.os == 'Linux'
+        run: |
+          echo "apt list:"
+          apt list --manual-installed=true
+          echo "apt-mark:"
+          apt-mark showmanual
+          echo "snap list:"
+          snap list
+      - if: runner.os == 'macOS'
+        run: |
+          echo "pkgutil:"
+          pkgutil --pkgs | sort
+          echo "brew list:"
+          brew list --versions || true
+      - if: runner.os == 'Windows'
+        uses: MinoruSekine/setup-scoop@main
+        with:
+          buckets: extras versions
+      - if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          echo Dump chocolatey, scoop, and winget output:
+          where winget
+          echo scoop --version:
+          call scoop --version
+          echo choco --version:
+          choco --version
+          echo choco list:
+          choco list --include-programs --yes
+          call scoop install --skip --no-update-scoop main/7zip # main/git main/innounp main/dark main/lessmsi
+          call scoop install --skip --no-update-scoop versions/winget1.5
+          ::# https://github.com/actions/runner-images/issues/6472#issue-1422886379
+          ::# yamllint disable rule:line-length
+          ::# yamllint disable
+          ::# yamllint disable-line rule:line-length
+          ::# Invoke-WebRequest -Uri 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx' -OutFile 'VCLibs.appx' | Out-Null # automatically downloads latest version
+          ::# yamllint disable-line rule:line-length
+          ::# Invoke-WebRequest -Uri 'https://github.com/microsoft/winget-cli/releases/download/latest/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle' -OutFile 'winget.msixbundle' | Out-Null
+          ::# yamllint disable-line rule:line-length
+          ::# $ReleaseInfo = Invoke-RestMethod 'https://api.github.com/repos/microsoft/winget-cli/releases/latest'
+          ::# yamllint disable-line rule:line-length
+          ::# Invoke-WebRequest -Uri $ReleaseInfo.assets.Where({ $_.name.EndsWith('License1.xml') }).browser_download_url -OutFile 'license.xml' | Out-Null # because the prefix of the file changes with every release
+          ::# yamllint disable-line rule:line-length
+          ::# Add-AppxProvisionedPackage -Online -PackagePath winget.msixbundle -LicensePath license.xml -DependencyPackagePath VCLibs.appx | Out-Null
+          ::# yamllint enable
+          echo scoop list:
+          call scoop list
+          echo winget list:
+          winget list --disable-interactivity --accept-source-agreements | sort
+          echo winget --info:
+          winget --info --disable-interactivity
+
+      # - if: false # runner.os == 'Windows'
+      #   shell: powershell
+      #   run: |
+      #     $hasPackageManager = Get-AppPackage -name 'Microsoft.DesktopAppInstaller'
+      #     if (!$hasPackageManager -or [version]$hasPackageManager.Version -lt [version]"1.10.0.0") {
+      #       "Installing winget Dependencies"
+      #       Add-AppxPackage -Path 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx'
+      #       $releases_url = 'https://api.github.com/repos/microsoft/winget-cli/releases/latest'
+
+      #       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      #       # yamllint disable-line rule:line-length
+      #       $releases = Invoke-RestMethod -uri $releases_url
+      #       $latestRelease = $releases.assets | Where { $_.browser_download_url.EndsWith('msixbundle') } | Select -First 1
+
+      #       "Installing winget from $($latestRelease.browser_download_url)"
+      #       Add-AppxPackage -Path $latestRelease.browser_download_url
+      #     } else {
+      #       "winget already installed"
+      #     }
+      #     #### Creating settings.json #####
+      #     if ([System.Security.Principal.WindowsIdentity]::GetCurrent().IsSystem) {
+      #       # yamllint disable-line rule:line-length
+      #       $SettingsPath = "$Env:windir\system32\config\systemprofile\AppData\Local\Microsoft\WinGet\Settings\settings.json"
+      #     } else {
+      #      # yamllint disable-line rule:line-length
+      #       $SettingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\settings.json"
+      #     }
+      #     if (Test-Path $SettingsPath) {
+      #       $ConfigFile = Get-Content -Path $SettingsPath | Where-Object {$_ -notmatch '//'} | ConvertFrom-Json
+      #     }
+      #     if (!$ConfigFile){
+      #       $ConfigFile = @{}
+      #     }
+      #     if ($ConfigFile.installBehavior.preferences.scope) {
+      #       $ConfigFile.installBehavior.preferences.scope = "Machine"
+      #     } else {
+      #       Add-Member -InputObject $ConfigFile -MemberType NoteProperty -Name 'installBehavior' -Value $(
+      #         New-Object PSObject -Property $(@{preferences = $(
+      #           New-Object PSObject -Property $(@{scope = "Machine"}))
+      #         })
+      #       ) -Force
+      #     }
+      #     $ConfigFile | ConvertTo-Json | Out-File $SettingsPath -Encoding utf8 -Force
+
+      - name: USES actions/checkout
+        uses: actions/checkout@v3.5.3
+
+      # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+      - name: RUN sh ./dumpvars.sh
+        # if: contains('Linux_macOS', runner.os)
+        # sh -e {0}
+        shell: sh -e -v -x {0}
+        run: ./dumpvars.sh sh
+
+      - name: RUN bash ./dumpvars.bash
+        # bash --noprofile --norc -eo pipefail {0}
+        shell: bash
+        run: ./dumpvars.bash bash
+
+      - name: RUN pwsh ./dumpvars.ps1
+        # pwsh -command ". '{0}'"
+        shell: pwsh
+        run: ./dumpvars.ps1 pwsh
+
+      - name: RUN powershell ./dumpvars.ps1 (Windows)
+        if: runner.os == 'Windows'
+        # powershell -command ". '{0}'"
+        shell: powershell
+        run: ./dumpvars.ps1 powershell
+
+      - name: RUN cmd dumpvars.cmd (Windows)
+        if: runner.os == 'Windows'
+        # `shell: cmd` runs this shell:
+        # %ComSpec% /D /E:ON /V:OFF /S /C "CALL "{0}""
+        # /D     Ignore registry AutoRun commands
+        # /E:ON  Enable CMD Command Extensions
+        # /V:OFF Disable delayed environment variable expansion
+        # /S     Strip " quote characters from command.
+        # /C     Run Command and then terminate
+        shell: 'cmd /D /E:ON /V:ON /S /C "CALL "{0}""'
+        run: dumpvars.cmd cmd
+
+      - name: RUN list executables (Linux)
+        if: runner.os == 'Linux'
+        # shell: bash
+        run: |
+          # list executables (Linux)
+          IFS=: read -r -a paths <<<"${PATH}"
+          find "${paths[@]}" -maxdepth 1 -type f,l -executable -printf '%P\t%h\n' | \
+            LC_COLLATE=C sort --ignore-case -u | \
+            column -ts $'\t' || true
+
+      - name: RUN list executables (macOS)
+        if: runner.os == 'macOS'
+        # shell: bash
+        run: |
+          # list executables (macOS)
+          which bash
+          which sh
+          IFS=: read -r -a paths <<<"${PATH}"
+          find "${paths[@]}" -maxdepth 1 -perm +111 -type f -or -type l -print | \
+            awk '{b=$0;sub(/\/.*\//,"", b);sub(/\/[a-z]*$/,"",$0);print b "\t" $0}' | \
+            LC_COLLATE=C sort --ignore-case -u | \
+            column -ts $'\t' || true
+
+      - name: RUN list executables (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          # list executables (Windows)
+          set -vx
+          IFS=: read -r -a paths <<<"${PATH}"
+          find "${paths[@]}" -maxdepth 1 -type f,l -regextype posix-extended -iregex '.*\.(bat|cmd|com|exe)$' -printf '%P\t%h\n' | \
+            LC_COLLATE=C sort --ignore-case -u | \
+            column -ts $'\t' || true
+
+      - name: RUN python
+        # python {0}
+        # this is python2 on macOS
+        shell: python
+        run: |
+          # run dumpvars.py commands:
+          import os
+          import pprint
+          import sys
+          print("os.name=%s" % os.name)
+          print("sys.executable=%s" % sys.executable)
+          print("sys.argv=")
+          pprint.pprint(sys.argv)
+          print("sys.version=%s" % sys.version)
+          print("sys.platform=%s" % sys.platform)
+          print("os.environ=")
+          pprint.pprint(dict(os.environ), width=4096)
+          sys.exit(0)
+
+      - name: RUN python dumpvars.py
+        # python {0}
+        # this is python2 on macOS
+        shell: python
+        run: |
+          # Execute python dumpvars.py
+          import os
+          import sys
+          os.system(" ".join([sys.executable, "./dumpvars.py", "arg1", "arg2"]))
+
+      - name: RUN python3
+        shell: python3 {0}
+        run: |
+          # run dumpvars.py commands:
+          import os
+          import pprint
+          import sys
+          print("os.name=%s" % os.name)
+          print("sys.executable=%s" % sys.executable)
+          print("sys.argv=")
+          pprint.pprint(sys.argv)
+          print("sys.version=%s" % sys.version)
+          print("sys.platform=%s" % sys.platform)
+          print("os.environ=")
+          pprint.pprint(dict(os.environ), width=4096)
+          sys.exit(0)
+
+      - name: RUN python3 dumpvars.py
+        shell: python3 {0}
+        run: |
+          # Execute python3 dumpvars.py
+          import pprint
+          import subprocess
+          import sys
+          rv = subprocess.run([sys.executable, "./dumpvars.py", "arg1", "arg2"])
+          pprint.pprint(rv)
+          sys.exit(0)
+
+      - name: RUN python3 dumpvars.py shell=true
+        shell: python3 {0}
+        run: |
+          # Execute python3 dumpvars.py
+          import pprint
+          import subprocess
+          import sys
+          rv = subprocess.run([sys.executable, "./dumpvars.py", "arg1", "arg2"], shell=True)
+          pprint.pprint(rv)
+          sys.exit(0)
+
+      - name: RUN python dumpvars.py
+        shell: python dumpvars.py {0}
+        run: |
+          # Execute python dumpvars.py
+
+      - name: RUN python3 dumpvars.py
+        shell: python3 dumpvars.py {0}
+        run: |
+          # Execute python3 dumpvars.py
+
+      # - name: USES actions/checkout@v3.3.0
+      #  uses: actions/checkout@v3.3.0
+      # - name: USES ./.github/workflows/debug.yaml@main
+      #  uses: ./.github/workflows/debug.yaml@main

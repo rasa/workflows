@@ -1,0 +1,36 @@
+---
+# $schema https://json.schemastore.org/github-workflow.json
+# ~/.github/workflows/dependabot.yaml
+# Automatically approves and merges dependabot PRs.
+
+name: dependabot
+
+"on": # quotes required to quiet linter
+  # push:
+  #   branches:
+  #     - main
+  #     - master
+  pull_request:
+  workflow_call: # Required so this workflow can be called from another workflow
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3.9.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  automerge:
+    needs: build
+    runs-on: ubuntu-22.04
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3.9.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+# eof

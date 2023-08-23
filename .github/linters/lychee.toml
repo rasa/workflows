@@ -1,0 +1,15 @@
+# Exclude checking all private IPs:
+exclude_all_private = true
+
+# Exclude URLs and mail addresses from checking (supports regex).
+exclude = [
+  "https://oxsecurity.github.io/megalinter/configuration/",
+  "https://pypi.org/project/\\$",
+  "https://megalinter.io/configuration/",
+  "https://megalinter.io/flavors/",
+  "https://github.com/microsoft/winget-cli/releases/download/latest/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle",
+  # quiets: https://github.com/rasa/workflows/actions/runs/5944405268/job/16121614165#step:5:1876
+  "calibreapp/image-actions@1.1.0",
+  "}}@users.noreply.github.com",
+  "julb/action-manage-label@1.0.1",
+]

@@ -1,0 +1,51 @@
+---
+# $schema https://json.schemastore.org/github-workflow.json
+# ./.github/workflows/codeql.yaml
+
+name: codeql
+
+"on": # quotes required to quiet linter
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "7 1 * * 4"
+  workflow_call: # Required so this workflow can be called from another workflow
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+  codeql:
+    name: Analyze
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ python ]
+
+    steps:
+      - name: USES actions/checkout@v3.5.3
+        uses: actions/checkout@v3.5.3
+
+      - name: USES github/codeql-action/init@v2.21.4
+        uses: github/codeql-action/init@v2.21.4
+        with:
+          languages: ${{ matrix.language }}
+          queries: +security-and-quality
+
+      - name: USES github/codeql-action/autobuild@v2.21.4
+        uses: github/codeql-action/autobuild@v2.21.4
+
+      - name: USES github/codeql-action/analyze@v2.21.4
+        uses: github/codeql-action/analyze@v2.21.4
+        with:
+          category: "/language:${{ matrix.language }}"
+
+# eof
