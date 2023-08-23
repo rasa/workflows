@@ -1,36 +1,36 @@
 {
-    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
-    "dictionaries": [
-        "custom-words",
-        "custom-filenames",
-        "linter-words"
-    ],
-    "dictionaryDefinitions": [
-        {
-            "addWords": true,
-            "name": "custom-words",
-            "path": "./.cspell/custom-words.txt"
-        },
-        {
-            "addWords": true,
-            "name": "custom-filenames",
-            "path": "./.cspell/custom-filenames.txt"
-        },
-        {
-            "addWords": true,
-            "name": "linter-words",
-            "path": "./.github/linters/cspell-ignore.txt"
-        }
-    ],
-    "ignorePaths": [
-        "**/node_modules/**",
-        "**/vscode-extension/**",
-        "**/.git/**",
-        "**/.pnpm-lock.json",
-        ".vscode",
-        "package-lock.json",
-        "megalinter-reports"
-    ],
-    "version": "0.2",
-    "language": "en"
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "dictionaries": [
+    "custom-words",
+    "custom-filenames",
+    "linter-words"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "addWords": true,
+      "name": "custom-words",
+      "path": "./.cspell/custom-words.txt"
+    },
+    {
+      "addWords": true,
+      "name": "custom-filenames",
+      "path": "./.cspell/custom-filenames.txt"
+    },
+    {
+      "addWords": true,
+      "name": "linter-words",
+      "path": "./.github/linters/cspell-ignore.txt"
+    }
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.git/**",
+    "**/.pnpm-lock.json",
+    ".vscode",
+    "package-lock.json",
+    "megalinter-reports"
+  ],
+  "version": "0.2",
+  "language": "en"
 }
