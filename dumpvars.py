@@ -1,15 +1,16 @@
 #!/usr/bin/env python
+"""Doc me."""
 
 import os
 import pprint
 import sys
 
-print("os.name=%s" % os.name)
-print("sys.executable=%s" % sys.executable)
+print(f"os.name={os.name}")
+print(f"sys.executable={sys.executable}")
 print("sys.argv=")
 pprint.pprint(sys.argv)
-print("sys.version=%s" % sys.version)
-print("sys.platform=%s" % sys.platform)
+print(f"sys.version={sys.version}")
+print("sys.platform=sys.platform}")
 print("os.environ=")
 pprint.pprint(dict(os.environ), width=4096)
 sys.exit(0)
