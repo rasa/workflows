@@ -11,7 +11,7 @@
 # FILTER_REGEX_EXCLUDE: "(?ix)(|megalinter-reports/.*|\\.git/.*)$"
 
 # quiet validation errors:
-# no longer needed:
+# no longer needed (why?):
 # YAML_V8R_FILTER_REGEX_EXCLUDE: "\\.github/workflows/(docs|labeller-file-based|labels)\\.yaml"
 
 ## CONVERT ERRORS TO WARNINGS ##
@@ -22,10 +22,6 @@ ACTION_ACTIONLINT_DISABLE_ERRORS: true
 # quiet validation errors:
 ACTION_ACTIONLINT_ARGUMENTS: >
   -ignore 'property "workflow_update_github_pat" is not defined in .+'
-
-# quiet validation errors:
-# no longer needed
-# POWERSHELL_POWERSHELL_DISABLE_ERRORS: true
 
 # quiet validation errors:
 PYTHON_BANDIT_DISABLE_ERRORS: true
@@ -73,25 +69,12 @@ REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
 
 ## COMMAND ARGUMENTS ##
 
-# REPOSITORY_DEVSKIM_ARGUMENTS:
-#   - '--ignore-globs'
-#   - '**/megalinter-reports/**,**/.git/**'
-
 ## GLOBAL SETTINGS ##
 
 APPLY_FIXES: all
-# Quiet logs:
-# [GitHub Status Reporter] Error posting Status for JSONwith prettier: 403
-# GitHub API response: {"message":"Resource not accessible by integration","documentation_url":"https://docs.github.com/rest/commits/statuses#create-a-commit-status"}
-# GITHUB_STATUS_REPORTER: true
 # LOG_LEVEL: DEBUG
 PRINT_ALL_FILES: true
 PRINT_ALPACA: false
-# Quiet logs:
-#   WARNING: there is a new pyright version available (v1.1.270 -> v1.1.281).
-#   Please install the new version or set PYRIGHT_PYTHON_FORCE_VERSION to `latest`
-# but causes schema to fail validation:
-# PYRIGHT_PYTHON_FORCE_VERSION: 'latest'
 SHOW_ELAPSED_TIME: true
 
 # eof
