@@ -5,6 +5,8 @@
 # Configuration file for MegaLinter
 # See all available variables at https://megalinter.io/latest/configuration/ and in linters documentation
 
+EXTENDS: https://raw.githubusercontent.com/rasa/workflows/main/.github/mega-linter-shared.yml
+
 ## FILTERS ##
 
 # buggy:
@@ -20,8 +22,8 @@
 ACTION_ACTIONLINT_DISABLE_ERRORS: true
 
 # quiet validation errors:
-ACTION_ACTIONLINT_ARGUMENTS: >
-  -ignore 'property "workflow_update_github_pat" is not defined in .+'
+# ACTION_ACTIONLINT_ARGUMENTS: >
+#  -ignore 'property "workflow_update_github_pat" is not defined in .+'
 
 # quiet validation errors:
 PYTHON_BANDIT_DISABLE_ERRORS: true
@@ -65,16 +67,6 @@ REPOSITORY_CHECKOV_DISABLE_ERRORS: true
 
 # quiet validation errors:
 #   fatal: detected dubious ownership in repository at '/github/workspace/.git'
-REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
-
-## COMMAND ARGUMENTS ##
-
-## GLOBAL SETTINGS ##
-
-APPLY_FIXES: all
-# LOG_LEVEL: DEBUG
-PRINT_ALL_FILES: true
-PRINT_ALPACA: false
-SHOW_ELAPSED_TIME: true
+# REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
 
 # eof
