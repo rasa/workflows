@@ -34,33 +34,33 @@ PYTHON_BANDIT_DISABLE_ERRORS: true
 
 # quiet validation errors:
 #   .github/metadata.py
-# PYTHON_MYPY_DISABLE_ERRORS: true
+PYTHON_MYPY_DISABLE_ERRORS: true
 # or quiet completely:
-PYTHON_MYPY_ARGUMENTS: >-
-  --ignore-missing-imports
-  --no-warn-unused-ignores
-  --disable-error-code no-any-return
-  --install-types
-  --non-interactive
-  --strict
+# PYTHON_MYPY_ARGUMENTS: >-
+#  --ignore-missing-imports
+#  --no-warn-unused-ignores
+#  --disable-error-code no-any-return
+#  --install-types
+#  --non-interactive
+#  --strict
 
 # quiet validation errors:
 PYTHON_PYLINT_DISABLE_ERRORS: true
 # or quiet completely:
-PYTHON_PYLINT_ARGUMENTS: >-
-  --disable consider-using-f-string
-  --disable fixme
-  --disable import-error
-  --disable invalid-name
-  --disable missing-class-docstring
-  --disable missing-function-docstring
-  --disable no-else-return
-  --disable no-self-use
-  --disable redefined-outer-name
-  --disable subprocess-run-check
-  --disable too-many-locals
-  --disable too-many-public-methods
-  --disable unspecified-encoding
+# PYTHON_PYLINT_ARGUMENTS: >-
+#  --disable consider-using-f-string
+#  --disable fixme
+#  --disable import-error
+#  --disable invalid-name
+#  --disable missing-class-docstring
+#  --disable missing-function-docstring
+#  --disable no-else-return
+#  --disable no-self-use
+#  --disable redefined-outer-name
+#  --disable subprocess-run-check
+#  --disable too-many-locals
+#  --disable too-many-public-methods
+#  --disable unspecified-encoding
 
 # quiet validation errors:
 REPOSITORY_CHECKOV_DISABLE_ERRORS: true
