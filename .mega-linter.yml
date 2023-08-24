@@ -36,8 +36,8 @@ PYTHON_BANDIT_ARGUMENTS: "--skip B101,B404,B603"
 #   .github/metadata.py
 # PYTHON_MYPY_DISABLE_ERRORS: true
 # or quiet completely:
-PYTHON_MYPY_ARGUMENTS: >
-  --ignore-missing-imports 
+PYTHON_MYPY_ARGUMENTS: >-
+  --ignore-missing-imports
   --no-warn-unused-ignores
   --install-types
   --non-interactive
@@ -45,7 +45,7 @@ PYTHON_MYPY_ARGUMENTS: >
 # quiet validation errors:
 # PYTHON_PYLINT_DISABLE_ERRORS: true
 # or quiet completely:
-PYTHON_PYLINT_ARGUMENTS: >
+PYTHON_PYLINT_ARGUMENTS: >-
   --disable consider-using-f-string
   --disable fixme
   --disable import-error
