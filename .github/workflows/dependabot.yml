@@ -8,6 +8,7 @@ name: dependabot
 "on": # quotes required to quiet linter
   # schedule:
   #   - cron: "0 */6 * * *" # Every six hours
+  workflow_call: # Required so this workflow can be called from another workflow
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 jobs:
   dependabot:
