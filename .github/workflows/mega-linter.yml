@@ -75,6 +75,8 @@ jobs:
         run: |
           sudo chown -Rc "${UID}" .git/
           sudo git config --global --add safe.directory "*"
+          git config --list | sort
+          git ls-files -s --eol
       # </@rasa>
 
       # MegaLinter
