@@ -83,9 +83,7 @@ jobs:
         run: |
           sudo chown -Rc "${UID}" .git/
           sudo git config --global --add safe.directory "*"
-          git config --list | sort
-          git config --global --list | sort
-          git config --system --list | sort
+          git config --show-origin --list | sort
           git ls-files -s --eol
       # </@rasa>
 
