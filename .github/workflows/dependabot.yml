@@ -1,36 +1,25 @@
 ---
 # $schema https://json.schemastore.org/github-workflow.json
 # ~/.github/workflows/dependabot.yml
-# Automatically approves and merges dependabot PRs.
+# Source: https://github.com/BetaHuhn/repo-file-sync-action/blob/master/.github/workflows/dependabot.yml
 
 name: dependabot
 
 "on": # quotes required to quiet linter
-  # push:
-  #   branches:
-  #     - main
-  #     - master
-  pull_request:
-  workflow_call: # Required so this workflow can be called from another workflow
+  # schedule:
+  #   - cron: "0 */6 * * *" # Every six hours
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
-
 jobs:
-  build:
-    runs-on: ubuntu-22.04
+  dependabot:
+    name: Auto Merge
+    runs-on: ubuntu-latest
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3.9.0
+      # Docs: https://github.com/AnandChowdhary/dependabot-pr-action
+      - name: USES AnandChowdhary/dependabot-pr-action@master
+        uses: AnandChowdhary/dependabot-pr-action@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-  automerge:
-    needs: build
-    runs-on: ubuntu-22.04
-    permissions:
-      pull-requests: write
-      contents: write
-    steps:
-      - uses: fastify/github-action-merge-dependabot@v3.9.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
+          merge-minor: true
+          merge-patch: true
 
 # eof
