@@ -1,7 +1,7 @@
 Set-PSDebug -Trace 1
-Write-Host -NoNewline "Executing: "
-Write-Host $MyInvocation.MyCommand.Name $args
-Write-Host
+Write-Output -NoNewline "Executing: "
+Write-Output $MyInvocation.MyCommand.Name $args
+Write-Output
 
 Get-Host
 
