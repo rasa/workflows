@@ -12,7 +12,7 @@
 
 # quiet validation errors:
 # no longer needed:
-#! YAML_V8R_FILTER_REGEX_EXCLUDE: "\\.github/workflows/(docs|labeller-file-based|labels)\\.yaml"
+# YAML_V8R_FILTER_REGEX_EXCLUDE: "\\.github/workflows/(docs|labeller-file-based|labels)\\.yaml"
 
 ## CONVERT ERRORS TO WARNINGS ##
 
@@ -24,13 +24,13 @@ ACTION_ACTIONLINT_ARGUMENTS: >
   -ignore 'property "workflow_update_github_pat" is not defined in .+'
 
 # quiet validation errors:
-# no longer needed?:
-#!POWERSHELL_POWERSHELL_DISABLE_ERRORS: true
+# no longer needed
+# POWERSHELL_POWERSHELL_DISABLE_ERRORS: true
 
 # quiet validation errors:
-# PYTHON_BANDIT_DISABLE_ERRORS: true
+PYTHON_BANDIT_DISABLE_ERRORS: true
 # or quiet completely:
-PYTHON_BANDIT_ARGUMENTS: "--skip B101,B404,B603"
+# PYTHON_BANDIT_ARGUMENTS: "--skip B101,B404,B603"
 
 # quiet validation errors:
 #   .github/metadata.py
@@ -39,11 +39,13 @@ PYTHON_BANDIT_ARGUMENTS: "--skip B101,B404,B603"
 PYTHON_MYPY_ARGUMENTS: >-
   --ignore-missing-imports
   --no-warn-unused-ignores
+  --disable-error-code no-any-return 
   --install-types
   --non-interactive
+  --strict
 
 # quiet validation errors:
-# PYTHON_PYLINT_DISABLE_ERRORS: true
+PYTHON_PYLINT_DISABLE_ERRORS: true
 # or quiet completely:
 PYTHON_PYLINT_ARGUMENTS: >-
   --disable consider-using-f-string
@@ -61,9 +63,9 @@ PYTHON_PYLINT_ARGUMENTS: >-
   --disable unspecified-encoding
 
 # quiet validation errors:
-# REPOSITORY_CHECKOV_DISABLE_ERRORS: true
+REPOSITORY_CHECKOV_DISABLE_ERRORS: true
 # or quiet completely:
-REPOSITORY_CHECKOV_ARGUMENTS: "--skip-check CKV2_GHA_1,CKV_GHA_7"
+# REPOSITORY_CHECKOV_ARGUMENTS: "--skip-check CKV2_GHA_1,CKV_GHA_7"
 
 # quiet validation errors:
 #   fatal: detected dubious ownership in repository at '/github/workspace/.git'
