@@ -7,54 +7,66 @@
 
 ## FILTERS ##
 
-# FILTER_REGEX_EXCLUDE: "\
-# (?ix)(\
-# |megalinter-reports/.*\
-# |\\.git/.*\
-# )$"
+FILTER_REGEX_EXCLUDE: "(?ix)(|megalinter-reports/.*|\\.git/.*)$"
 
-# quiets validation errors
+# quiet validation errors:
+# no longer needed:
 #! YAML_V8R_FILTER_REGEX_EXCLUDE: "\\.github/workflows/(docs|labeller-file-based|labels)\\.yaml"
 
 ## CONVERT ERRORS TO WARNINGS ##
 
-# quiets validation errors
-#!ACTION_ACTIONLINT_DISABLE_ERRORS: true
+# quiet validation errors:
+ACTION_ACTIONLINT_DISABLE_ERRORS: true
 
-# quiets validation errors
-#!ACTION_ACTIONLINT_ARGUMENTS: >
-#  -ignore 'property "workflow_update_github_pat" is not defined in .+'
+# quiet validation errors:
+ACTION_ACTIONLINT_ARGUMENTS: >
+  -ignore 'property "workflow_update_github_pat" is not defined in .+'
 
-# quiets validation errors
+# quiet validation errors:
+# no longer needed?:
 #!POWERSHELL_POWERSHELL_DISABLE_ERRORS: true
 
-# quiets validation errors
-#!PYTHON_BANDIT_DISABLE_ERRORS: true
+# quiet validation errors:
+# PYTHON_BANDIT_DISABLE_ERRORS: true
 # or quiet completely:
-# PYTHON_BANDIT_ARGUMENTS: "--skip B101,B404,B603"
+PYTHON_BANDIT_ARGUMENTS: "--skip B101,B404,B603"
 
-# quiets validation errors
-#!PYTHON_MYPY_DISABLE_ERRORS: true
+# quiet validation errors:
+#   .github/metadata.py
+# PYTHON_MYPY_DISABLE_ERRORS: true
 # or quiet completely:
-# PYTHON_MYPY_ARGUMENTS: >
-# --ignore-missing-imports 
-# --no-warn-unused-ignores
-# --install-types
-# --non-interactive
+PYTHON_MYPY_ARGUMENTS: >
+  --ignore-missing-imports 
+  --no-warn-unused-ignores
+  --install-types
+  --non-interactive
 
-# quiets validation errors
-#!PYTHON_PYLINT_DISABLE_ERRORS: true
+# quiet validation errors:
+# PYTHON_PYLINT_DISABLE_ERRORS: true
 # or quiet completely:
-# PYTHON_PYLINT_ARGUMENTS: "--disable import-error"
+PYTHON_PYLINT_ARGUMENTS: >
+  --disable consider-using-f-string
+  --disable fixme
+  --disable import-error
+  --disable invalid-name
+  --disable missing-class-docstring
+  --disable missing-function-docstring
+  --disable no-else-return
+  --disable no-self-use
+  --disable redefined-outer-name
+  --disable subprocess-run-check
+  --disable too-many-locals
+  --disable too-many-public-methods
+  --disable unspecified-encoding
 
-# quiets validation errors
-#!REPOSITORY_CHECKOV_DISABLE_ERRORS: true
+# quiet validation errors:
+# REPOSITORY_CHECKOV_DISABLE_ERRORS: true
 # or quiet completely:
-# REPOSITORY_CHECKOV_ARGUMENTS: "--skip-check CKV2_GHA_1,CKV_GHA_7"
+REPOSITORY_CHECKOV_ARGUMENTS: "--skip-check CKV2_GHA_1,CKV_GHA_7"
 
-# quiets validation errors
+# quiet validation errors:
 #   fatal: detected dubious ownership in repository at '/github/workspace/.git'
-#!REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
+REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
 
 ## COMMAND ARGUMENTS ##
 
@@ -78,3 +90,5 @@ PRINT_ALPACA: false
 # but causes schema to fail validation:
 # PYRIGHT_PYTHON_FORCE_VERSION: 'latest'
 SHOW_ELAPSED_TIME: true
+
+# eof
