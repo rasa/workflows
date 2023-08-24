@@ -39,7 +39,7 @@ PYTHON_BANDIT_DISABLE_ERRORS: true
 PYTHON_MYPY_ARGUMENTS: >-
   --ignore-missing-imports
   --no-warn-unused-ignores
-  --disable-error-code no-any-return 
+  --disable-error-code no-any-return
   --install-types
   --non-interactive
   --strict
