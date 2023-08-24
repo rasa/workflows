@@ -81,12 +81,12 @@ jobs:
       # but it doesn't appear to work 
       - name: RUN git config global add safe.directory "*"
         run: |
-          sudo chown -Rc "${UID}" .git/
+          sudo chown -Rc "${UID}" .git/ /github/workspace/.git
           sudo git config --global --add safe.directory "*"
-          git config --show-origin --list | sort
-          pwd
-          git ls-files -s --eol
-          ls /github/workspace || true
+          sudo git config --global --add safe.directory "/github/workspace/.git"
+          # git config --show-origin --list | sort
+          # git ls-files -s --eol
+          # ls /github/workspace || true
       # </@rasa>
 
       # MegaLinter
