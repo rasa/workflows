@@ -36,7 +36,11 @@ PYTHON_BANDIT_DISABLE_ERRORS: true
 # quiets validation errors
 PYTHON_MYPY_DISABLE_ERRORS: true
 # or quiet completely:
-# PYTHON_MYPY_ARGUMENTS: "--ignore-missing-imports"
+# PYTHON_MYPY_ARGUMENTS: >
+# --ignore-missing-imports 
+# --no-warn-unused-ignores
+# --install-types
+# --non-interactive
 
 # quiets validation errors
 PYTHON_PYLINT_DISABLE_ERRORS: true
