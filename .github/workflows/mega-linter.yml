@@ -53,6 +53,11 @@ jobs:
   build:
     name: MegaLinter
     runs-on: ubuntu-latest
+    # <@rasa>
+    defaults:
+      run:
+        shell: bash --noprofile --norc -e -o pipefail -v -x {0}    
+    # </@rasa>
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push, comment issues & post new PR
       # Remove the ones you do not need
@@ -68,14 +73,19 @@ jobs:
           fetch-depth: ${{ inputs.fetch_depth }} # @rasa If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to improve performances
 
       # <@rasa>
+      - name: USES crazy-max/ghaction-dump-context@v2.1.0
+        uses: crazy-max/ghaction-dump-context@v2.1.0
+
       # Attempting to fix Devskim's:
       #   fatal: detected dubious ownership in repository at '/github/workspace/.git'
-      # but it doesn't appear to work
+      # but it doesn't appear to work 
       - name: RUN git config global add safe.directory "*"
         run: |
           sudo chown -Rc "${UID}" .git/
           sudo git config --global --add safe.directory "*"
           git config --list | sort
+          git config --global --list | sort
+          git config --system --list | sort
           git ls-files -s --eol
       # </@rasa>
 
