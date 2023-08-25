@@ -2,6 +2,7 @@
 # $schema https://json.schemastore.org/github-workflow.json
 # ~/.github/workflows/mega-linter.yml
 # yamllint disable rule:line-length
+# cSpell:ignore Devskim's, noprofile, norc, rasa, stefanzweifel
 # checkov:skip=CKV2_GHA_1:Ensure top-level permissions are not set to write-all
 # MegaLinter GitHub Action configuration file
 # More info at https://megalinter.io
