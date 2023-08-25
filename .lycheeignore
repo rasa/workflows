@@ -1,3 +1,5 @@
+# ~/.lycheeignore
+
 \}\}@users.noreply.github.com
 julb/action-manage-label@1.0.1
 https://megalinter.io/flavors/
@@ -6,3 +8,7 @@ https://megalinter.io/configuration/
 https://github.com/microsoft/winget-cli/releases/download/latest/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
 git\+https://github.com/kdeldycke/mdformat-web.git@fix-extra-html-tags
 https://pypi.org/project/\$
+
+# cSpell:ignore calibreapp, julb, noreply
+
+# eof

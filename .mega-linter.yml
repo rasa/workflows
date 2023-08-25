@@ -77,4 +77,6 @@ PRINT_ALL_FILES: true
 PRINT_ALPACA: false
 SHOW_ELAPSED_TIME: true
 
+# cSpell:ignore DEVSKIM, MYPY, PYLINT
+
 # eof

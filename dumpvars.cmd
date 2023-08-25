@@ -154,3 +154,6 @@ exit 0
     wmic.exe %%A get * /format:textvaluelist
   )
 exit 0
+
+@rem cSpell:ignore APPDIR, colours, COMPAT, DPATH, enableextensions, errorlevel, setlocal
+@rem cSpell:ignore systeminfo, UEFI, wmics
