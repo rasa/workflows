@@ -293,3 +293,7 @@ jobs:
       #  uses: actions/checkout@v3.3.0
       # - name: USES ./.github/workflows/debug.yaml@main
       #  uses: ./.github/workflows/debug.yaml@main
+
+# cSpell:ignore bbwe, choco, dumpvars, iregex, innounp, lessmsi, LOCALAPPDATA, maxdepth, Minoru, msixbundle, noprofile, norc, notmatch, pipefail, pkgs, posix, pprint, pwsh, regextype, Sekine, showmanual, systemprofile, wekyb, windir, winget
+
+# eof

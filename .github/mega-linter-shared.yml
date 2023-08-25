@@ -2,17 +2,19 @@
 
 ## CONVERT ERRORS TO WARNINGS ##
 
-# produces too many flase positives:
+# produces too many false positives:
 COPYPASTE_JSCPD_DISABLE_ERRORS: true
 
-# produces too many flase positives:
-MAKEFILE_CHECKMAKE_DISABLE_ERRORS: true
+# EDITORCONFIG_EDITORCONFIG_CHECKER_DISABLE_ERRORS
+
+# Reports variable assignment as targets:
+# MAKEFILE_CHECKMAKE_DISABLE_ERRORS: true
 
 # produces too many flase positives:
 REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
-
-# produces too many flase positives:
-REPOSITORY_GIT_DIFF_DISABLE_ERRORS: true
+ 
+# Reporting errant whitespace where there is none:
+# REPOSITORY_GIT_DIFF_DISABLE_ERRORS: true
 
 ## COMMAND ARGUMENTS ##
 
@@ -37,7 +39,7 @@ MARKDOWN_MARKDOWNLINT_CONFIG_FILE: '.github/linters/.markdownlint.yaml'
 PYTHON_MYPY_ARGUMENTS: '--install-types --non-interactive'
 
 # @todo determine default location:
-PYTHON_PYRIGHT_ARGUMENTS: '-p /github/workspace/.github/linters/.pyrightconfig.json'
+PYTHON_PYRIGHT_ARGUMENTS: '-p .github/linters/.pyrightconfig.json'
 
 # Quiets "Ensure top-level permissions are not set to write-all":
 REPOSITORY_CHECKOV_ARGUMENTS: '--skip-check CKV2_GHA_1'
@@ -50,7 +52,7 @@ REPOSITORY_DEVSKIM_ARGUMENTS: ['--ignore-globs','**/megalinter-reports/**,**/.gi
 # this appears to have fixed the issue:
 REPOSITORY_GIT_DIFF_ARGUMENTS: '--ignore-space-change' # didn't fix it: --ignore-space-at-eol
 
-# I don't know if 2 verboses increases verbosity:
+# I don't know if 2 'verbose's increases verbosity:
 YAML_V8R_ARGUMENTS: '--verbose --verbose'
 
 ## GLOBAL SETTINGS ##
@@ -72,19 +74,21 @@ APPLY_FIXES: all # default: none
 
 # LOG_LEVEL: DEBUG # default: INFO
 
-PRINT_ALL_FILES: true # default: false
+# PRINT_ALL_FILES: true # default: false
 
 PRINT_ALPACA: false # default: true
 
-# https://github.com/rasa/dotfiles/actions/runs/3518606223/jobs/5897703672#step:4:187 shows:
+# This error:
 #   WARNING: there is a new pyright version available (v1.1.270 -> v1.1.280).
 #   Please install the new version or set PYRIGHT_PYTHON_FORCE_VERSION to `latest`
+# suggests the below, but including it causes the file to fail validation.
 # PYRIGHT_PYTHON_FORCE_VERSION: 'latest'
 
 # REPORT_OUTPUT_FOLDER: '${GITHUB_WORKSPACE}/.cache/mega-linter'
 
 SHOW_ELAPSED_TIME: true # default: false
 
-# cSpell:ignore CHECKMAKE, DEVSKIM, KICS, PROSELINT, PYLINT, SEMGREP, TRIVY
+# cSpell:ignore CHECKMAKE, cjson, DEVSKIM, flase, JSONLINT, KICS, MYPY, mypy, PROSELINT, PYLINT, PYRIGHT, pyright, SEMGREP, TRIVY
+
 
 # eof
