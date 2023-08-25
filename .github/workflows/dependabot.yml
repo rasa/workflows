@@ -23,4 +23,6 @@ jobs:
           merge-minor: true
           merge-patch: true
 
+# cSpell:ignore Anand AnandChowdhary Chowdhary
+
 # eof
