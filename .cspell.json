@@ -9,7 +9,7 @@
         {
             "addWords": true,
             "name": "custom-words",
-            "path": "./.cspell/custom-words.txt"
+            "path": "./.cspell/custom-filenames.txt"
         },
         {
             "addWords": true,
