@@ -9,7 +9,7 @@
         {
             "addWords": true,
             "name": "custom-words",
-            "path": "./.cspell/custom-filenames.txt"
+            "path": "./.cspell/custom-words.txt"
         },
         {
             "addWords": true,
@@ -19,7 +19,7 @@
         {
             "addWords": true,
             "name": "linter-words",
-            "path": "./.cspell/custom-filenames.txt"
+            "path": "./.github/linter/.cspellignore"
         }
     ],
     "ignorePaths": [
