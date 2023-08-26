@@ -18,7 +18,6 @@ docstrings
 Deldycke
 elts
 lentgth
-# matchin
 mdedup
 nuitka
 Nuitka
@@ -82,14 +81,12 @@ julb
 
 ## .github/workflows/lint.yaml: 13 word(s), 23 instance(s):
 blackholing
-# blindy
 getenv
 gitleaks
 iname
 lycheeverse
 mypy
 Mypy
-# nauseum
 pathlib
 pypi
 shellcheck
