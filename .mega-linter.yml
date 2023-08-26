@@ -26,6 +26,14 @@ ACTION_ACTIONLINT_DISABLE_ERRORS: true
 #  -ignore 'property "workflow_update_github_pat" is not defined in .+'
 
 # quiet validation errors:
+EDITORCONFIG_EDITORCONFIG_CHECKER_DISABLE_ERRORS: true
+# or quiet completely:
+EDITORCONFIG_EDITORCONFIG_CHECKER_ARGUMENTS: >-
+  -disable-indent-size
+  -disable-end-of-line
+  -disable-indentation
+  
+# quiet validation errors:
 PYTHON_BANDIT_DISABLE_ERRORS: true
 # or quiet completely:
 # PYTHON_BANDIT_ARGUMENTS: "--skip B101,B404,B603"
