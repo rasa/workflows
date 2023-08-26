@@ -7,6 +7,9 @@
 
 EXTENDS: https://raw.githubusercontent.com/rasa/workflows/main/.github/mega-linter-shared.yml
 
+# For debugging only:
+SPELL_CSPELL_ARGUMENTS: '--verbose --debug'
+
 ## FILTERS ##
 
 # buggy:
