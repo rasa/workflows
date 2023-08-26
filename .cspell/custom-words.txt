@@ -1,3 +1,4 @@
+# cSpell:disable
 ## .editorconfig: 2 word(s), 3 instance(s):
 posix
 shfmt
