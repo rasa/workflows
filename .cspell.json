@@ -3,7 +3,8 @@
     "dictionaries": [
         "custom-words",
         "custom-filenames",
-        "github-words"
+        "github-words",
+        "root-words"
     ],
     "dictionaryDefinitions": [
         {
@@ -20,6 +21,11 @@
             "addWords": true,
             "name": "github-words",
             "path": "./.github/.cspellignore"
+        },
+        {
+            "addWords": true,
+            "name": "root-words",
+            "path": ".cspellignore"
         }
     ],
     "ignorePaths": [
