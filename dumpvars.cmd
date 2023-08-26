@@ -155,5 +155,6 @@ exit 0
   )
 exit 0
 
+@rem cSpell:ignore dumpvars
 @rem cSpell:ignore APPDIR, colours, COMPAT, DPATH, enableextensions, errorlevel, setlocal
 @rem cSpell:ignore systeminfo, UEFI, wmics

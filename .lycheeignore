@@ -9,6 +9,6 @@ https://github.com/microsoft/winget-cli/releases/download/latest/Microsoft.Deskt
 git\+https://github.com/kdeldycke/mdformat-web.git@fix-extra-html-tags
 https://pypi.org/project/\$
 
-# cSpell:ignore calibreapp, julb, noreply
+# cSpell:ignore calibreapp, lycheeignore, julb, noreply
 
 # eof

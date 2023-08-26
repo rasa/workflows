@@ -48,4 +48,6 @@ jobs:
         with:
           category: "/language:${{ matrix.language }}"
 
+# cSpell:ignore codeql
+
 # eof
