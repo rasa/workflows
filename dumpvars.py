@@ -14,7 +14,7 @@ pprint.pprint(sys.argv)
 sys_version = sys.version
 print(f"sys.version={sys_version}")
 sys_platform = sys.platform
-print("sys.platform={sys_platform}")
+print(f"sys.platform={sys_platform}")
 print("os.environ=")
 pprint.pprint(dict(os.environ), width=4096)
 sys.exit(0)
