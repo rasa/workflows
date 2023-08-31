@@ -21,7 +21,8 @@ name: mega-linter # @rasa
       - main
       - master
   # <@rasa>
-  workflow_call: # Required so this workflow can be called from another workflow
+  # Required so this workflow can be called from another workflow
+  workflow_call: 
     inputs:
       fetch_depth:
         description: "Number of commits to fetch. 0 indicates all history for all branches and tags."
@@ -33,7 +34,8 @@ name: mega-linter # @rasa
         type: boolean
         required: false
         default: false
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
     inputs:
       fetch_depth:
         description: "Number of commits to fetch. 0 indicates all history for all branches and tags."
