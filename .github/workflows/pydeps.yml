@@ -147,6 +147,6 @@ jobs:
         run: |
           pipdeptree --freeze --warn silence | grep -E '^[a-zA-Z0-9\-]+'
 
-# cSpell:ignore MAPFILE, mapfile, noprofile, norc, pipefail, pipreqs, pydeps, pipdeptree, pur
+# cSpell:ignore MAPFILE, mapfile, mapfiles, maxdepth, noprofile, norc, pipefail, pipreqs, pydeps, pipdeptree, pur
 
 # eof
