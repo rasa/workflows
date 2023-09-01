@@ -19,7 +19,7 @@ jobs:
       - name: USES AnandChowdhary/dependabot-pr-action@master
         uses: AnandChowdhary/dependabot-pr-action@master
         with:
-          token: ${{ secrets.GITHUB_TOKEN || }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           merge-minor: true
           merge-patch: true
 
