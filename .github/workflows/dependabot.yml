@@ -10,6 +10,9 @@ name: dependabot
   #   - cron: "0 */6 * * *" # Every six hours
   workflow_call: # Required so this workflow can be called from another workflow
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+permissions: write-all
+
 jobs:
   dependabot:
     name: Auto Merge
