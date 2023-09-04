@@ -31,8 +31,10 @@ jobs:
         language: [ python ]
 
     steps:
-      - name: USES actions/checkout@v3.5.3
-        uses: actions/checkout@v3.5.3
+      - name: USES actions/checkout@v4
+        uses: actions/checkout@v4
+        with:
+          progress: false
 
       - name: USES github/codeql-action/init@v2.21.4
         uses: github/codeql-action/init@v2.21.4
