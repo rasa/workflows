@@ -8,6 +8,7 @@ name: Changelog & versions
     paths:
       - changelog.md
       - pyproject.toml
+      - requirements.txt
       - .github/update_changelog.py
       # Trigger on any workflow change to make sure version gets hard-coded everywhere.
       - .github/workflows/*.yaml
@@ -31,7 +32,7 @@ jobs:
           - minor
           - major
     steps:
-      - uses: actions/checkout@v3.6.0
+      - uses: actions/checkout@v4.0.0
       - uses: actions/setup-python@v4.7.0
         with:
           python-version: "3.11"
@@ -99,7 +100,7 @@ jobs:
     # keep the release date in sync.
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3.6.0
+      - uses: actions/checkout@v4.0.0
       - uses: actions/setup-python@v4.7.0
         with:
           python-version: "3.11"
@@ -154,14 +155,14 @@ jobs:
       - name: Set release date in changelog
         # TODO: encode this search and replace pattern in bump-my-version's TOML.
         run: >
-          bump-my-version replace --no-configured-files
+          bump-my-version replace --no-regex --no-configured-files
           --search "(unreleased)"
           --replace "({now:%Y-%m-%d})"
           ./changelog.md
       - name: Update comparison URL in changelog
         # TODO: encode this search and replace pattern in bump-my-version's TOML.
         run: >
-          bump-my-version replace --no-configured-files
+          bump-my-version replace --no-regex --no-configured-files
           --search "...main"
           --replace "...v{current_version}"
           ./changelog.md

@@ -3,10 +3,10 @@
 # Also, a project relying on this repository can point to this external requirement.txt,
 # even from its Poetry's venv. We cannot do that with Poetry, as it doesn't support sub-venvs.
 # All versions are pinned so we have ultimate control over reproducibility.
-autopep8 == 2.0.3
+autopep8 == 2.0.4
 black == 23.7.0
 blacken-docs == 1.16.0
-bump-my-version == 0.9.3
+bump-my-version == 0.10.0
 check-wheel-contents == 0.4.0
 docformatter == 1.7.5
 # https://mdformat.readthedocs.io/en/stable/users/plugins.html
@@ -49,12 +49,12 @@ mdformat-toc == 0.3.0
 # mdformat-web > 0.1.0
 mdformat-web @ git+https://github.com/kdeldycke/mdformat-web.git@fix-extra-html-tags
 mypy == 1.5.1
-nuitka == 1.7.10
+nuitka == 1.8
 ordered-set == 4.1.0
 pipdeptree == 2.13.0
 poetry == 1.6.1
 PyDriller == 2.5.1
-ruff == 0.0.285
+ruff == 0.0.287
 tomli == 2.0.1 ; python_version < "3.11"
 twine == 4.0.2
 yamllint == 1.32.0

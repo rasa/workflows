@@ -1,13 +1,14 @@
 # Changelog
 
-## [2.17.9 (unreleased)](https://github.com/kdeldycke/workflows/compare/v2.17.8...main)
+## [2.18.0 (unreleased)](https://github.com/kdeldycke/workflows/compare/v2.17.8...main)
 
 ```{important}
 This version is not released yet and is under active development.
 ```
 
-- Upgrade to `bump-my-version` `0.9.2`.
-- Remove the step updating the release date of `citation.cff` in `changelog` job. This can be done with `bump-my-version`.
+- Upgrade to `bump-my-version` `0.10.0`.
+- Remove the step updating the release date of `citation.cff` in `changelog` job. This can be done with `bump-my-version` now.
+- Trigger changelog updates on `requirements.txt` changes.
 
 ## [2.17.8 (2023-07-16)](https://github.com/kdeldycke/workflows/compare/v2.17.7...v2.17.8)
 
