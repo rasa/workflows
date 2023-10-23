@@ -7,6 +7,11 @@
 
 EXTENDS:  https://raw.githubusercontent.com/rasa/workflows/main/.github/mega-linter-shared.yml
 
+# reset to defaults to diagnose:
+# https://github.com/rasa/workflows/actions/runs/6618009620/job/17975524372#step:5:150
+PYTHON_MYPY_CONFIG_FILE: "/dev/null"
+PYTHON_MYPY_ARGUMENTS: ""
+
 ## FILTERS ##
 
 ## CONVERT ERRORS TO WARNINGS ##
