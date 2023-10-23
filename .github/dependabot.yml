@@ -1,0 +1,28 @@
+---
+# Copied from: rasa/dotfiles/.github/dependabot.yml
+# EDIT THE ABOVE FILE OR YOUR CHANGES WILL BE LOST!
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/" # == /.github/workflows/
+    schedule:
+      interval: "daily"
+      time: "08:00"
+      timezone: "America/Los_Angeles"
+    labels:
+      - "dependencies"
+    reviewers:
+      - "rasa"
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "08:00"
+      timezone: "America/Los_Angeles"
+    labels:
+      - "dependencies"
+    reviewers:
+      - "rasa"
+# cSpell:ignore rasa
+
+# eof
