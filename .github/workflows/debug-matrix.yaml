@@ -384,7 +384,7 @@ jobs:
           import sys
           args = [sys.executable, "./.github/scripts/dumpvars.py"]
           args += sys.args[:1]
-          os.system(" ".args))
+          os.system(" ".args)
           sys.exit(0)
 
       - name: RUN python3 .github/scripts/dumpvars.py (inline)
