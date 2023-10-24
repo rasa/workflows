@@ -298,42 +298,36 @@ jobs:
         run: |
           # upgrade pip
           set -x
-          python=$(command -v python || true)
-          python="${python:-$(command -v python3 || true)}"
-          python="${python:-$(command -v python2 || true)}"
-          python="${python:-$(command -v py || true)}"
-          command -v pip >/dev/null || alias pip="${python} -m pip"
-          sudo=$(command -v sudo || true)
+          PYTHON=$(type -P python python3 python2 py | head -n 1)
+          # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
+          type -P pip >/dev/null || alias pip="${PYTHON} -m pip"
+          sudo=$(type -P sudo)
 
-          ${sudo} "${python}" -m pip install --upgrade pip
+          ${sudo} "${PYTHON}" -m pip install --upgrade pip
 
       - name: RUN pip list
         shell: bash
         run: |
           # pip list
           set -x
-          python=$(command -v python || true)
-          python="${python:-$(command -v python3 || true)}"
-          python="${python:-$(command -v python2 || true)}"
-          python="${python:-$(command -v py || true)}"
-          command -v pip >/dev/null || alias pip="${python} -m pip"
+          PYTHON=$(type -P python python3 python2 py | head -n 1)
+          # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
+          type -P pip >/dev/null || alias pip="${PYTHON} -m pip"
 
           echo "pip list:"
-          pip  list
+          pip list
           echo "pip list --outdated:"
-          pip  list --outdated
+          pip list --outdated
 
       - name: RUN pip install future
         shell: bash
         run: |
           # pip install future
           set -vx
-          python=$(command -v python || true)
-          python="${python:-$(command -v python3 || true)}"
-          python="${python:-$(command -v python2 || true)}"
-          python="${python:-$(command -v py || true)}"
-          command -v pip >/dev/null || alias pip="${python} -m pip"
-          sudo=$(command -v sudo || true)
+          PYTHON=$(type -P python python3 python2 py | head -n 1)
+          # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
+          type -P pip >/dev/null || alias pip="${PYTHON} -m pip"
+          sudo=$(type -P sudo)
 
           if pip show future >/dev/null; then
             exit 0
@@ -347,7 +341,7 @@ jobs:
             else
               app=python-future
             fi
-            sudo apt-get -y install "${app}"
+            ${sudo} apt-get -y install "${app}"
             if pip show future >/dev/null; then
               exit 0
             fi
