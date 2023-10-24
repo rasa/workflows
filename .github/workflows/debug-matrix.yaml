@@ -268,14 +268,14 @@ jobs:
         run: |
           # install pip
           set -x
-          command -v pip &>/dev/null && exit 0
-          python=$(command -v python || true)
-          python="${python:-$(command -v python3 || true)}"
-          python="${python:-$(command -v python2 || true)}"
-          python="${python:-$(command -v py || true)}"
-          pyversion=$("${python}" -c 'import sys; print(sys.version_info[0]);')
+          type -P pip >/dev/null && exit 0
+          PYTHON=$(type -P python python3 python2 py | head -n 1)
+          # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
+          type -P pip >/dev/null || alias pip="${PYTHON} -m pip"
+          sudo=$(type -P sudo)
+
+          pyversion=$("${PYTHON}" -c 'import sys; print(sys.version_info[0]);')
           # Git for Windows doesn't have sudo
-          sudo=$(command -v sudo || true)
 
           if command -v apt-get >/dev/null; then
             sudo apt-get -qq -y update
@@ -295,7 +295,7 @@ jobs:
           else
             curl -o get-pip.py "${url}"
           fi
-          ${sudo} "${python}" get-pip.py
+          ${sudo} "${PYTHON}" get-pip.py
 
       - name: RUN upgrade pip
         shell: bash
@@ -337,7 +337,7 @@ jobs:
             exit 0
           fi
 
-          py_version=$("${python}" -c 'import sys; print(sys.version_info[0]);')
+          py_version=$("${PYTHON}" -c 'import sys; print(sys.version_info[0]);')
 
           if command -v apt-get >/dev/null; then
             if ((py_version==3)); then
@@ -367,7 +367,7 @@ jobs:
             curl -s "${url}" | tar xzf -
           fi
           cd python-future-master/src
-          ${sudo} "${python}" setup.py install
+          ${sudo} "${PYTHON}" setup.py install
           cd ..
           rm -fr python-future-master
 
