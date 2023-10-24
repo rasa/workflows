@@ -383,7 +383,7 @@ jobs:
           import os
           import sys
           args = [sys.executable, "./.github/scripts/dumpvars.py"]
-          args += sys.args[:1]
+          args += sys.argv[:1]
           os.system(" ".args)
           sys.exit(0)
 
@@ -412,7 +412,7 @@ jobs:
           import subprocess
           import sys
           args = [sys.executable, "./.github/scripts/dumpvars.py"]
-          args += sys.args[:1]
+          args += sys.argv[:1]
           rv = subprocess.run(args)
           pprint.pprint(rv)
           sys.exit(0)
@@ -425,7 +425,7 @@ jobs:
           import subprocess
           import sys
           args = [sys.executable, "./.github/scripts/dumpvars.py"]
-          args += sys.args[:1]
+          args += sys.argv[:1]
           rv = subprocess.run(args, shell=True)
           pprint.pprint(rv)
           print('stdout:')
