@@ -6,6 +6,7 @@ name: Lint
     branches:
       - main
   pull_request:
+  workflow_dispatch: # added by @rasa
 
 concurrency:
   # Group workflow jobs so new commits cancels in-progress execution triggered by previous commits.
