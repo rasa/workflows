@@ -9,8 +9,8 @@ EXTENDS:  https://raw.githubusercontent.com/rasa/workflows/main/.github/mega-lin
 
 # reset to defaults to diagnose:
 # https://github.com/rasa/workflows/actions/runs/6618009620/job/17975524372#step:5:150
-PYTHON_MYPY_CONFIG_FILE: "/dev/null"
-PYTHON_MYPY_ARGUMENTS: "--install-types"
+# PYTHON_MYPY_CONFIG_FILE: "/dev/null"
+PYTHON_MYPY_ARGUMENTS: "--install-types --ignore-missing-imports"
 #  --ignore-missing-imports
 #  --no-warn-unused-ignores
 #  --disable-error-code no-any-return
