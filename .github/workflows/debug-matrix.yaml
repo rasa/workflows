@@ -269,13 +269,12 @@ jobs:
           # install pip
           set -x
           type -P pip >/dev/null && exit 0
-          PYTHON=$(type -P python python3 python2 py | head -n 1)
+          PYTHON=$(type -P python3 python py python2 | head -n 1 || true)
           # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
-          type -P pip >/dev/null || alias pip="${PYTHON} -m pip"
-          sudo=$(type -P sudo)
+          alias pip="${PYTHON} -m pip"
+          sudo=$(type -P sudo || true)
 
           pyversion=$("${PYTHON}" -c 'import sys; print(sys.version_info[0]);')
-          # Git for Windows doesn't have sudo
 
           if command -v apt-get >/dev/null; then
             sudo apt-get -qq -y update
@@ -291,10 +290,11 @@ jobs:
 
           url="https://bootstrap.pypa.io/pip/2.7/get-pip.py"
           if command -v wget >/dev/null; then
-            wget -O get-pip.py "${url}"
+            dl=(wget -q -O)
           else
-            curl -o get-pip.py "${url}"
+            dl=(curl -s -o)
           fi
+          "${dl[@]}" get-pip.py "${url}"
           ${sudo} "${PYTHON}" get-pip.py
 
       - name: RUN upgrade pip
@@ -302,10 +302,12 @@ jobs:
         run: |
           # upgrade pip
           set -x
-          PYTHON=$(type -P python python3 python2 py | head -n 1)
-          # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
-          type -P pip >/dev/null || alias pip="${PYTHON} -m pip"
-          sudo=$(type -P sudo)
+          PYTHON=$(type -P python3 python py python2 | head -n 1 || true)
+          if ! type -P pip >/dev/null; then
+            # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
+            alias pip="${PYTHON} -m pip"
+          fi
+          sudo=$(type -P sudo || true)
 
           ${sudo} "${PYTHON}" -m pip install --upgrade pip
 
@@ -314,9 +316,11 @@ jobs:
         run: |
           # pip list
           set -x
-          PYTHON=$(type -P python python3 python2 py | head -n 1)
-          # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
-          type -P pip >/dev/null || alias pip="${PYTHON} -m pip"
+          PYTHON=$(type -P python3 python py python2 | head -n 1 || true)
+          if ! type -P pip >/dev/null; then
+            # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
+            alias pip="${PYTHON} -m pip"
+          fi
 
           echo "pip list:"
           pip list
@@ -328,10 +332,12 @@ jobs:
         run: |
           # pip install future
           set -vx
-          PYTHON=$(type -P python python3 python2 py | head -n 1)
-          # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
-          type -P pip >/dev/null || alias pip="${PYTHON} -m pip"
-          sudo=$(type -P sudo)
+          PYTHON=$(type -P python3 python py python2 | head -n 1 || true)
+          if ! type -P pip >/dev/null; then
+            # shellcheck disable=SC2139 # This expands when defined, not when used. Consider escaping
+            alias pip="${PYTHON} -m pip"
+          fi
+          sudo=$(type -P sudo || true)
 
           if pip show future >/dev/null; then
             exit 0
@@ -362,10 +368,12 @@ jobs:
           # https://github.com/PythonCharmers/python-future/issues/604
           url="https://github.com/PythonCharmers/python-future/archive/master.tar.gz"
           if command -v wget >/dev/null; then
-            wget -qO - "${url}" | tar xzf -
+            dl=(wget -q -O -)
           else
-            curl -s "${url}" | tar xzf -
+            dl=(curl -s)
           fi
+          "${dl[@]}" "${url}" | tar xzf -
+
           cd python-future-master/src
           ${sudo} "${PYTHON}" setup.py install
           cd ..
@@ -384,6 +392,7 @@ jobs:
           import sys
           args = [sys.executable, "./.github/scripts/dumpvars.py"]
           args += sys.argv[:1]
+          print("Executing %s" % " ".join(args))
           os.system(" ".join(args))
           sys.exit(0)
 
@@ -413,7 +422,9 @@ jobs:
           import sys
           args = [sys.executable, "./.github/scripts/dumpvars.py"]
           args += sys.argv[:1]
+          print("Executing %s" % " ".join(args))
           rv = subprocess.run(args)
+          print("rv=")
           pprint.pprint(rv)
           sys.exit(0)
 
@@ -426,7 +437,9 @@ jobs:
           import sys
           args = [sys.executable, "./.github/scripts/dumpvars.py"]
           args += sys.argv[:1]
+          print("Executing %s" % " ".join(args))
           rv = subprocess.run(args, shell=True)
+          print("rv:")
           pprint.pprint(rv)
           print('stdout:')
           pprint.pprint(rv.stdout)
