@@ -288,13 +288,9 @@ jobs:
             exit 0
           fi
 
-          url="https://bootstrap.pypa.io/pip/2.7/get-pip.py"
-          if command -v wget >/dev/null; then
-            dl=(wget -q -O)
-          else
-            dl=(curl -s -o)
-          fi
-          "${dl[@]}" get-pip.py "${url}"
+          GET_PIP_URL==https://bootstrap.pypa.io/pip/2.7/get-pip.py
+          curl -s -o get-pip.py "${GET_PIP_URL}"
+
           ${sudo} "${PYTHON}" get-pip.py
 
       - name: RUN upgrade pip
@@ -366,13 +362,8 @@ jobs:
           ${sudo} pip install --upgrade setuptools
 
           # https://github.com/PythonCharmers/python-future/issues/604
-          url="https://github.com/PythonCharmers/python-future/archive/master.tar.gz"
-          if command -v wget >/dev/null; then
-            dl=(wget -q -O -)
-          else
-            dl=(curl -s)
-          fi
-          "${dl[@]}" "${url}" | tar xzf -
+          PYTHON_FUTURE_URL="https://github.com/PythonCharmers/python-future/archive/master.tar.gz"
+          curl -s "${PYTHON_FUTURE_URL}" | tar xzf -
 
           cd python-future-master/src
           ${sudo} "${PYTHON}" setup.py install
