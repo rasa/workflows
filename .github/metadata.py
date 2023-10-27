@@ -234,9 +234,12 @@ class Metadata:
             # commit introduced by the pull request.
             end = self.github_context["event"]["pull_request"]["head"]["sha"]
         # Push event.
+        elif "before" in self.github_context["event"]:
+          start = self.github_context["event"]["before"]
+          end = self.github_context["sha"]
         else:
-            start = self.github_context["event"]["before"]
-            end = self.github_context["sha"]
+          start = ""
+          end = ""
         print("--- Commit range ---")
         print(f"Range start: {start}")
         print(f"Range end: {end}")
