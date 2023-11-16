@@ -124,7 +124,7 @@ jobs:
           #   }}
           VALIDATE_ALL_CODEBASE: >-
             ${{
-              inputs.validate_all_codebase == 'true' || # added by @rasa
+              inputs.validate_all_codebase == 'true' ||
               github.event_name == 'push' &&
               contains(fromJSON('["refs/heads/main", "refs/heads/master"]'), github.ref)
             }}
