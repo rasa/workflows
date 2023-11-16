@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-# pylint: disable=C0209 # Formatting a regular string which could be a f-string (consider-using-f-string)
+# pylint: disable=C0209 # Formatting a regular string which could be a 
+# f-string (consider-using-f-string)
 """Doc me.
 
 On macos-12, `python` is python 2.7.18
