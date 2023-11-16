@@ -17,6 +17,7 @@ name: MegaLinter
     branches:
       - main
       - master
+
   # <@rasa>
   workflow_call: # Required so this workflow can be called from another workflow
     inputs:
@@ -42,6 +43,7 @@ name: MegaLinter
           - "true"
         default: "true"
   # </@rasa>
+
 # Comment env block if you do not want to apply fixes
 env:
   # Apply linter fixes configuration
@@ -66,11 +68,13 @@ jobs:
   megalinter:
     name: MegaLinter
     runs-on: ubuntu-latest
+
     # <@rasa>
     # defaults:
     #   run:
     #     shell: bash --noprofile --norc -v -x {0}
     # </@rasa>
+
     # Give the default GITHUB_TOKEN write permission to commit and push, comment
     # issues & post new PR; remove the ones you do not need
     permissions:
@@ -89,6 +93,7 @@ jobs:
           # improve performance
           fetch-depth: ${{ inputs.fetch_depth }} # added by @rasa
           show-progress: false # added by @rasa
+
       # <@rasa>
       - name: output debug vars
         run: |
@@ -146,6 +151,7 @@ jobs:
           path: |
             megalinter-reports
             mega-linter.log
+
       # <@rasa>
       - name: Remove production artifacts
         continue-on-error: true
@@ -162,6 +168,7 @@ jobs:
           steps.ml.outputs=${{ toJSON(steps.ml.outputs) }}
           EOF
       # </@rasa>
+
       # Set APPLY_FIXES_IF var for use in future steps
       - name: Set APPLY_FIXES_IF var
         run: |
