@@ -1,5 +1,8 @@
 # cSpell:disable
 
+#  ./changelog.md
+realease
+
 ##  ./.github/workflows/debug-matrix.yaml:
 Noninteractive
 pyversion
