@@ -2,9 +2,9 @@
 # ~/.github/workflows/mega-linter.yml
 # yamllint disable rule:line-length
 # cSpell:ignore Devskim's, noprofile, norc, rasa, stefanzweifel
-# checkov:skip=CKV2_GHA_1:Ensure top-level permissions are not set to write-all
+# _checkov:skip=CKV2_GHA_1:Ensure top-level permissions are not set to write-all
 ---
-name: MegaLinter
+name: mega-linter
 
 # Trigger mega-linter at every push. Action will also be visible from Pull
 # Requests to main
