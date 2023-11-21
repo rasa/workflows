@@ -78,6 +78,6 @@ REPOSITORY_CHECKOV_DISABLE_ERRORS: true
 #   fatal: detected dubious ownership in repository at '/github/workspace/.git'
 # REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
 #
-# cSpell:ignore DEVSKIM, MYPY, PYLINT, PYRIGHT
 #
+# cSpell:ignore DEVSKIM
 # eof

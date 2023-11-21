@@ -77,6 +77,6 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2.21.4
 #
-# cSpell:ignore Autobuild, codeql
 #
+# cSpell:ignore Autobuild
 # eof

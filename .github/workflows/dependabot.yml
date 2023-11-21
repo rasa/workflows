@@ -26,6 +26,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           merge-minor: true
           merge-patch: true
-# cSpell:ignore Anand AnandChowdhary Chowdhary
 #
+# cSpell:ignore Anand, Chowdhary
 # eof

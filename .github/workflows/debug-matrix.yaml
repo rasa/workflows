@@ -453,6 +453,9 @@ jobs:
       # - name: USES ./.github/workflows/debug.yaml@main
       #  uses: ./.github/workflows/debug.yaml@main
 
-# cSpell:ignore bbwe, choco, dumpvars, iregex, innounp, lessmsi, LOCALAPPDATA, maxdepth, Minoru, msixbundle, noprofile, norc, notmatch, pipefail, pkgs, posix, pprint, pwsh, regextype, Sekine, showmanual, systemprofile, wekyb, windir, winget
 
+# cSpell:ignore bbwe, choco, innounp, iregex, lessmsi, LOCALAPPDATA, Minoru
+# cSpell:ignore msixbundle, Noninteractive, noprofile, norc, notmatch, pkgs, pwsh
+# cSpell:ignore pyversion, regextype, Sekine, setuptools, showmanual, systemprofile
+# cSpell:ignore wekyb, windir, winget
 # eof

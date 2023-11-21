@@ -1,7 +1,6 @@
 # $schema https://json.schemastore.org/github-workflow.json
 # ~/.github/workflows/mega-linter.yml
 # yamllint disable rule:line-length
-# cSpell:ignore Devskim's, noprofile, norc, rasa, stefanzweifel
 # _checkov:skip=CKV2_GHA_1:Ensure top-level permissions are not set to write-all
 ---
 name: mega-linter
@@ -234,3 +233,4 @@ jobs:
           commit_message: "[MegaLinter] Apply linters fixes"
           commit_user_name: megalinter-bot
           commit_user_email: nicolas.vuillamy@ox.security
+# cSpell:ignore noprofile, norc, stefanzweifel

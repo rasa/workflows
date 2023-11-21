@@ -1,6 +1,115 @@
-# cSpell:disable
-# ~/.cspellignore
+## cSpell:disable
+## ~/.cspellignore
 
 cspellignore
+docstrings
 dumpvars
+kdeldycke
 rasa
+
+# .github/labels.yaml
+docstrings
+
+# .github/update_mailmap.py
+Deldycke
+
+#.github/workflows/autofix.yaml
+docstrings
+iname
+jsonlint
+mdformat
+nohup
+visualstudiocode
+
+# .github/workflows/autolock.yaml
+dessant
+
+# .github/workflows/changelog.yaml
+noreply
+
+# .github/workflows/docs.yaml
+apidoc
+autodoc
+calibreapp
+Graphviz
+graphviz
+peaceiris
+pipdeptree
+sobolevn
+
+# .github/workflows/label-sponsors.yaml
+Etco
+
+# .github/workflows/labels.yaml
+julb
+
+# .github/workflows/lint.yaml
+blackholing
+iname
+lycheeverse
+ycombinator
+
+# .github/workflows/release.yaml
+commitish
+ghadelimiter
+globbing
+nofollow
+nuitka
+Nuitka
+nuitka's
+onefile
+oneline
+pypa
+softprops
+tvdias
+zstandard
+
+# changelog.md
+admon
+apidoc
+artefacts
+asottile
+autodoc
+autofixing
+bumpversion
+calibreapp
+deflist
+docstrings
+executablebooks
+graphviz
+Graphviz
+Graphviz's
+jsonlint
+julb
+mdformat
+mdit
+multine
+Nuitka
+nuitka
+OIDC
+oneliners
+pipdeptree
+pycln
+pyupgrade
+retargetting
+typeshed
+ycombinator
+zstandard
+
+# pyproject.toml
+bumpversion
+
+# readme.md
+Nuitka
+Optimised
+Tabler
+
+# requirements.txt
+admon
+deflist
+frontmatter
+mdformat
+mdit
+nuitka
+pipdeptree
+zstandard
