@@ -1,1 +1,2 @@
- # ~/.cspell/custom-filenames.txt
+## cSpell:disable
+## ~/.cspell/custom-filenames.txt

@@ -1,30 +1,30 @@
-# cSpell:disable
+## cSpell:disable
 
 #  ./changelog.md
 realease
 
-##  ./.github/workflows/debug-matrix.yaml:
+#  ./.github/workflows/debug-matrix.yaml:
 Noninteractive
 pyversion
 setuptools
 
-## .editorconfig: 2 word(s), 3 instance(s):
+# .editorconfig: 2 word(s), 3 instance(s):
 posix
 shfmt
 
-## .github/dependabot.yaml: 1 word(s), 2 instance(s):
+# .github/dependabot.yaml: 1 word(s), 2 instance(s):
 kdeldycke
 
-## .github/funding.yml: 1 word(s), 1 instance(s):
+# .github/funding.yml: 1 word(s), 1 instance(s):
 kdeldycke
 
-## .github/labeller-file-based.yaml: 1 word(s), 2 instance(s):
+# .github/labeller-file-based.yaml: 1 word(s), 2 instance(s):
 pyproject
 
-## .github/labels.yaml: 1 word(s), 1 instance(s):
+# .github/labels.yaml: 1 word(s), 1 instance(s):
 docstrings
 
-## .github/metadata.py: 9 word(s), 18 instance(s):
+# .github/metadata.py: 9 word(s), 18 instance(s):
 Deldycke
 elts
 lentgth
@@ -34,14 +34,14 @@ Nuitka
 pydriller
 seealso
 
-## .github/update_changelog.py: 2 word(s), 6 instance(s):
+# .github/update_changelog.py: 2 word(s), 6 instance(s):
 bumpversion
 Deldycke
 
-## .github/update_mailmap.py: 1 word(s), 1 instance(s):
+# .github/update_mailmap.py: 1 word(s), 1 instance(s):
 Deldycke
 
-## .github/workflows/autofix.yaml: 13 word(s), 30 instance(s):
+# .github/workflows/autofix.yaml: 13 word(s), 30 instance(s):
 Autofix
 autofix
 autopep
@@ -56,11 +56,11 @@ shfmt
 virtualenv
 visualstudiocode
 
-## .github/workflows/autolock.yaml: 2 word(s), 2 instance(s):
+# .github/workflows/autolock.yaml: 2 word(s), 2 instance(s):
 Autolock
 dessant
 
-## .github/workflows/changelog.yaml: 7 word(s), 11 instance(s):
+# .github/workflows/changelog.yaml: 7 word(s), 11 instance(s):
 bumpversion
 DOTALL
 iname
@@ -70,7 +70,7 @@ pathlib
 pyproject
 utcnow
 
-## .github/workflows/docs.yaml: 12 word(s), 25 instance(s):
+# .github/workflows/docs.yaml: 12 word(s), 25 instance(s):
 apidoc
 autodoc
 autofix
@@ -84,13 +84,13 @@ sobolevn
 venv
 virtualenvs
 
-## .github/workflows/label-sponsors.yaml: 1 word(s), 1 instance(s):
+# .github/workflows/label-sponsors.yaml: 1 word(s), 1 instance(s):
 Etco
 
-## .github/workflows/labels.yaml: 1 word(s), 1 instance(s):
+# .github/workflows/labels.yaml: 1 word(s), 1 instance(s):
 julb
 
-## .github/workflows/lint.yaml: 13 word(s), 23 instance(s):
+# .github/workflows/lint.yaml: 13 word(s), 23 instance(s):
 blackholing
 getenv
 gitleaks
@@ -103,7 +103,7 @@ pypi
 shellcheck
 ycombinator
 
-## .github/workflows/release.yaml: 20 word(s), 36 instance(s):
+# .github/workflows/release.yaml: 20 word(s), 36 instance(s):
 commitish
 getenv
 ghadelimiter
@@ -125,7 +125,7 @@ tvdias
 venv
 zstandard
 
-## .gitignore: 60 word(s), 76 instance(s):
+# .gitignore: 60 word(s), 76 instance(s):
 apdisk
 celerybeat
 Connor
@@ -187,12 +187,12 @@ Virtualenv
 vsix
 webassets
 
-## .mailmap: 3 word(s), 4 instance(s):
+# .mailmap: 3 word(s), 4 instance(s):
 Deldycke
 kdeldycke
 noreply
 
-## changelog.md: 47 word(s), 104 instance(s):
+# changelog.md: 47 word(s), 104 instance(s):
 admon
 apidoc
 artefacts
@@ -241,21 +241,21 @@ venv
 ycombinator
 zstandard
 
-## license: 2 word(s), 4 instance(s):
+# license: 2 word(s), 4 instance(s):
 Gnomovision
 Yoyodyne
 
-## pyproject.toml: 1 word(s), 2 instance(s):
+# pyproject.toml: 1 word(s), 2 instance(s):
 bumpversion
 
-## readme.md: 5 word(s), 6 instance(s):
+# readme.md: 5 word(s), 6 instance(s):
 dotfiles
 Nuitka
 Optimised
 pyproject
 Tabler
 
-## requirements.txt: 15 word(s), 20 instance(s):
+# requirements.txt: 15 word(s), 20 instance(s):
 admon
 autopep
 deflist
