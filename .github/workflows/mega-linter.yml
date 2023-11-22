@@ -106,7 +106,7 @@ jobs:
 
         # You can override MegaLinter flavor used to have faster performances
         # More info at https://megalinter.io/flavors/
-        uses: oxsecurity/megalinter@v7.5.0 # changed from v7 by @rasa
+        uses: oxsecurity/megalinter@v7.6.0 # changed from v7 by @rasa
 
         id: ml
 
@@ -233,4 +233,5 @@ jobs:
           commit_message: "[MegaLinter] Apply linters fixes"
           commit_user_name: megalinter-bot
           commit_user_email: nicolas.vuillamy@ox.security
+#
 # cSpell:ignore noprofile, norc, stefanzweifel
