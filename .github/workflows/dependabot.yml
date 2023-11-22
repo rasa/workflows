@@ -1,31 +1,51 @@
 ---
-# $schema https://json.schemastore.org/github-workflow.json
 # ~/.github/workflows/dependabot.yml
 # Source: https://github.com/BetaHuhn/repo-file-sync-action/blob/master/.github/workflows/dependabot.yml
+# $schema https://json.schemastore.org/github-workflow.json
 
-name: dependabot
+name: auto-merge
 
-"on": # quotes required to quiet linter
-  schedule:
-    # run every day at 16:00 UTC (09:00 PDT)
-    - cron: "0 16 * * *"
-  workflow_call: # Required so this workflow can be called from another workflow
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+"on":
+  pull_request:
 
 permissions: write-all
 
 jobs:
-  dependabot:
-    name: Auto Merge
+  job:
     runs-on: ubuntu-latest
     steps:
-      # Docs: https://github.com/AnandChowdhary/dependabot-pr-action
-      - name: USES AnandChowdhary/dependabot-pr-action@master
-        uses: AnandChowdhary/dependabot-pr-action@master
+      - uses: actions/checkout@v4.1.1
+      # See https://github.com/ahmadnassri/action-dependabot-auto-merge?tab=readme-ov-file#usage
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2.6.6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          merge-minor: true
-          merge-patch: true
+          target: minor
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+# cSpell:ignore ahmadnassri
+
+# name: dependabot
+#
+# "on": # quotes required to quiet linter
+#   schedule:
+#     # run every day at 16:00 UTC (09:00 PDT)
+#     - cron: "0 16 * * *"
+#   workflow_call: # Required so this workflow can be called from another workflow
+#   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+#
+# permissions: write-all
+#
+# jobs:
+#   dependabot:
+#     name: Auto Merge
+#     runs-on: ubuntu-latest
+#     steps:
+#       # Docs: https://github.com/AnandChowdhary/dependabot-pr-action
+#       - name: USES AnandChowdhary/dependabot-pr-action@master
+#         uses: AnandChowdhary/dependabot-pr-action@master
+#         with:
+#           token: ${{ secrets.GITHUB_TOKEN }}
+#           merge-minor: true
+#           merge-patch: true
 #
 # cSpell:ignore Anand, Chowdhary
 # eof
