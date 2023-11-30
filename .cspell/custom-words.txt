@@ -2,6 +2,7 @@
 
 Deldycke
 Gnomovision
+kdeldycke
 noreply
 Yoyodyne
 
@@ -9,9 +10,10 @@ Yoyodyne
 #  ./.mailmap: text/plain (1x)
 # Gnomovision:
 #  ./license: text/plain (3x)
+# kdeldycke:
+#  ./.mailmap: text/plain (2x)
 # noreply:
 #  ./.mailmap: text/plain (1x)
 # Yoyodyne:
 #  ./license: text/plain (1x)
 
-# eof
