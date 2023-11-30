@@ -155,9 +155,9 @@ jobs:
       - name: Remove production artifacts
         continue-on-error: true
         run: |
-          sudo chown -Rc $UID megalinter-reports mega-linter.log
-          sudo chmod +w megalinter-reports mega-linter.log
-          sudo rm -fr megalinter-reports mega-linter.log
+          sudo chown -Rc "${UID}" megalinter-reports mega-linter.log || true
+          sudo chmod a+w megalinter-reports mega-linter.log || true
+          sudo rm -fr megalinter-reports mega-linter.log || true
       # - name: USES crazy-max/ghaction-dump-context@v2.1.0
       #   uses: crazy-max/ghaction-dump-context@v2.1.0
 
