@@ -47,13 +47,13 @@ mdformat-toc == 0.3.0
 # So waiting for the PR to be merged and a new release to be published.
 # mdformat-web > 0.1.0
 mdformat-web @ git+https://github.com/kdeldycke/mdformat-web.git@fix-extra-html-tags
-mypy == 1.7.0
-nuitka == 1.8.6
+mypy == 1.7.1
+nuitka == 1.9
 ordered-set == 4.1.0
 pipdeptree == 2.13.1
-poetry == 1.7.0
-PyDriller == 2.5.1
-ruff == 0.1.5
+poetry == 1.7.1
+PyDriller == 2.6
+ruff == 0.1.6
 tomli == 2.0.1 ; python_version < "3.11"
 twine == 4.0.2
 yamllint == 1.33.0
