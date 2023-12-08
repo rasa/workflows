@@ -56,6 +56,7 @@
       "path": "./.github/.cspell/custom-filenames.txt"
     }
   ],
+  "enableGlobDot": true,
   "ignorePaths": [
   ],
   "language": "en",
