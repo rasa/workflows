@@ -2,10 +2,6 @@
 
 echo Running: "$0" "$@"
 echo \$-=$-
-
-echo "(set -o posix; set):"
-(
-  set -o posix
-  set
-)
+typeset -p
+declare -F
 exit 0
