@@ -57,14 +57,10 @@
     }
   ],
   "ignorePaths": [
-    "**/node_modules/**",
-    "**/vscode-extension/**",
-    "**/.git/**",
-    "**/.pnpm-lock.json",
-    ".vscode",
-    "package-lock.json",
-    "megalinter-reports"
   ],
   "language": "en",
+  "maxNumberOfProblems": 1000,
+  "noConfigSearch": true,
+  "useGitignore": true,
   "version": "0.2"
 }
