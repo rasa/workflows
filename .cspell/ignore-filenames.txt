@@ -2,14 +2,4 @@
 ## ~/.cspell/ignore-filenames.txt
 
 autolock
-codeql
-ecrc
-grype
-hadolint
-jsonlintrc
 lycheeignore
-markdownlint
-pydeps
-pylintrc
-pyrightconfig
-textlintrc
