@@ -132,6 +132,7 @@ apidoc
 artefacts
 asottile
 autodoc
+autofix
 autofixing
 bumpversion
 calibreapp

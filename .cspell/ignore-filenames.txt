@@ -1,5 +1,15 @@
 ## cSpell:disable
 ## ~/.cspell/ignore-filenames.txt
 
-autofix
 autolock
+codeql
+ecrc
+grype
+hadolint
+jsonlintrc
+lycheeignore
+markdownlint
+pydeps
+pylintrc
+pyrightconfig
+textlintrc
