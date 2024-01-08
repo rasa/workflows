@@ -26,22 +26,28 @@ python_files=".github/update_mailmap.py" ".github/metadata.py" "setup.py"
 doc_files="changelog.md" "readme.md" "docs/license.md"
 is_poetry_project=true
 package_name=click-extra
-black_params=--target-version py37 --target-version py38
-ruff_params=--target-version py37
+blacken_docs_params=--target-version py37 --target-version py38
+ruff_py_version=py37
 mypy_params=--python-version 3.7
+current_version=2.0.1
+released_version=2.0.0
 is_sphinx=true
 active_autodoc=true
+release_notes=[🐍 Available on PyPi](https://pypi.org/project/click-extra/2.21.3).
 new_commits_matrix={'commit': ['346ce664f055fbd042a25ee0b7e96702e95',
                                '6f27db47612aaee06fdf08744b09a9f5f6c2'],
                     'include': [{'commit': '346ce664f055fbd042a25ee0b7e96702e95',
-                                 'short_sha': '346ce66'},
+                                 'short_sha': '346ce66',
+                                 'current_version': '2.0.1'},
                                 {'commit': '6f27db47612aaee06fdf08744b09a9f5f6c2',
-                                 'short_sha': '6f27db4'}]}
+                                 'short_sha': '6f27db4',
+                                 'current_version': '2.0.0'}]}
 release_commits_matrix={'commit': ['6f27db47612aaee06fdf08744b09a9f5f6c2'],
                         'include': [{'commit': '6f27db47612aaee06fdf08744b09a9f5f6c2',
-                                     'short_sha': '6f27db4'}]}
+                                     'short_sha': '6f27db4',
+                                     'current_version': '2.0.0'}]}
 nuitka_matrix={'entry_point': ['mpm'],
-               'os': ['ubuntu-22.04', 'macos-12', 'windows-2022'],
+               'os': ['ubuntu-22.04', 'macos-13', 'windows-2022'],
                'arch': ['x64'],
                'include': [{'entry_point': 'mpm',
                             'cli_id': 'mpm',
@@ -52,7 +58,7 @@ nuitka_matrix={'entry_point': ['mpm'],
                             'platform_id': 'linux',
                             'extension': 'bin',
                             'extra_python_params': ''},
-                           {'os': 'macos-12',
+                           {'os': 'macos-13',
                             'platform_id': 'macos',
                             'extension': 'bin',
                             'extra_python_params': ''},
@@ -65,7 +71,7 @@ nuitka_matrix={'entry_point': ['mpm'],
                             'arch': 'x64',
                             'bin_name': 'mpm-linux-x64-build-6f27db4.bin'},
                            {'entry_point': 'mpm',
-                            'os': 'macos-12',
+                            'os': 'macos-13',
                             'arch': 'x64',
                             'bin_name': 'mpm-macos-x64-build-6f27db4.bin'},
                            {'entry_point': 'mpm',
@@ -79,10 +85,6 @@ nuitka_matrix={'entry_point': ['mpm'],
     The ``new_commits_matrix``, ``release_commits_matrix`` and ``nuitka_matrix``
     variables in the block above are pretty-printed for readability. They are not
     actually formatted this way in the environment file, but inlined.
-
-Automatic detection of minimal Python version is being discussed upstream for:
-- `black` at https://github.com/psf/black/issues/3124
-- `mypy` [rejected] at https://github.com/python/mypy/issues/13294
 """
 
 # pylint: disable=fixme,no-name-in-module,too-many-public-methods
@@ -98,16 +100,21 @@ from collections.abc import Generator, Iterable
 from functools import cached_property
 from itertools import product
 from pathlib import Path
+from random import randint
+from re import escape
 from typing import Any, cast
 
 from black.mode import TargetVersion
+from bumpversion.config import get_configuration  # type: ignore[import-untyped]
+from bumpversion.config.files import find_config_file  # type: ignore[import-untyped]
+from bumpversion.show import resolve_name  # type: ignore[import-untyped]
 from mypy.defaults import PYTHON3_VERSION_MIN
 from poetry.core.constraints.version import Version, VersionConstraint, parse_constraint
 from poetry.core.pyproject.toml import PyProjectTOML
-from pydriller import Commit, Repository  # type: ignore[import]
+from pydriller import Commit, Git, Repository  # type: ignore[import]
 
 SHORT_SHA_LENGTH = 7
-"""Default SHA lentgth hard-coded to ``7``.
+"""Default SHA length hard-coded to ``7``.
 
 .. caution::
 
@@ -164,8 +171,11 @@ class Metadata:
         return context
 
     @staticmethod
-    def sha_matrix(commits: Iterable[Commit] | None) -> TMatrix | None:
-        """Pre-compute a matrix with long and short SHA values.
+    def commit_matrix(commits: Iterable[Commit] | None) -> TMatrix | None:
+        """Pre-compute a matrix of commits.
+
+        The list of commits is augmented with long and short SHA values, as well as
+        current version. Most recent commit is first, oldest is last.
 
         Returns a ready-to-use matrix structure:
 
@@ -179,26 +189,46 @@ class Metadata:
                     {
                         "commit": "346ce664f055fbd042a25ee0b7e96702e95",
                         "short_sha": "346ce66",
+                        "current_version": "2.0.1",
                     },
                     {
                         "commit": "6f27db47612aaee06fdf08744b09a9f5f6c2",
                         "short_sha": "6f27db4",
+                        "current_version": "2.0.0",
                     },
                 ],
             }
         """
         if not commits:
             return None
-        sha_list = [commit.hash for commit in commits]
+
+        # Save a reference to the current commit.
+        git = Git(".")
+        head_sha = git.get_head().hash
+
+        sha_list = []
+        include_list = []
+        for commit in commits:
+            sha = commit.hash
+
+            # Checkout the commit so we can read the version associated with it.
+            current_version = None
+            git.checkout(sha)
+            current_version = Metadata.get_current_version()
+
+            sha_list.append(sha)
+            include_list.append({
+                "commit": sha,
+                "short_sha": sha[:SHORT_SHA_LENGTH],
+                "current_version": current_version,
+            })
+
+        # Restore the repository to the initial commit.
+        git.checkout(head_sha)
+
         return {
             "commit": sha_list,
-            "include": [
-                {
-                    "commit": sha,
-                    "short_sha": sha[:SHORT_SHA_LENGTH],
-                }
-                for sha in sha_list
-            ],
+            "include": include_list,
         }
 
     @cached_property
@@ -264,7 +294,7 @@ class Metadata:
     @cached_property
     def new_commits_matrix(self) -> TMatrix | None:
         """Pre-computed matrix with long and short SHA values of new commits."""
-        return self.sha_matrix(self.new_commits)
+        return self.commit_matrix(self.new_commits)
 
     @cached_property
     def new_commits_hash(self) -> tuple[str, ...] | None:
@@ -301,7 +331,7 @@ class Metadata:
     @cached_property
     def release_commits_matrix(self) -> TMatrix | None:
         """Pre-computed matrix with long and short SHA values of release commits."""
-        return self.sha_matrix(self.release_commits)
+        return self.commit_matrix(self.release_commits)
 
     @cached_property
     def release_commits_hash(self) -> tuple[str, ...] | None:
@@ -391,13 +421,34 @@ class Metadata:
             )
         if constraint and not constraint.is_empty():
             return constraint
+        # TODO: Should we default to current running Python ?
         return None
 
     @cached_property
-    def black_params(self) -> tuple[str, ...] | None:
-        """Generates `black` parameters.
+    def py_target_versions(self) -> tuple[str, ...] | None:
+        """Generates the list of Python target versions.
 
-        Black should be fed with a subset of these parameters:
+        This is based on Black's support matrix.
+        """
+        if self.project_range:
+            minor_range = sorted(v.value for v in TargetVersion)
+            black_range = (
+                Version.from_parts(major=3, minor=minor) for minor in minor_range
+            )
+            return tuple(
+                f"py{version.text.replace('.', '')}"
+                for version in black_range
+                if self.project_range.allows(version)
+            )
+        return None
+
+    @cached_property
+    def blacken_docs_params(self) -> tuple[str, ...] | None:
+        """Generates `blacken-docs` parameters.
+
+        `Blacken-docs reuses Black's --target-version pyXY parameters
+        <https://github.com/adamchainz/blacken-docs/blob/cd4e60f/src/blacken_docs/__init__.py#L263-L271>`_,
+        and needs to be fed with a subset of these:
         - `--target-version py33`
         - `--target-version py34`
         - `--target-version py35`
@@ -407,64 +458,32 @@ class Metadata:
         - `--target-version py39`
         - `--target-version py310`
         - `--target-version py311`
+        - `--target-version py312`
 
-        `You should include all Python versions that you want your code to run under
+        As mentionned in Black usage, you should `include all Python versions that you
+        want your code to run under
         <https://github.com/psf/black/issues/751#issuecomment-473066811>`_.
-
-        .. tip::
-
-            Can also be re-used for `blacken-docs
-            <https://github.com/adamchainz/blacken-docs/blob/cd4e60f/src/blacken_docs/__init__.py#L263-L271>`_.
-
-        .. caution::
-
-            Black supports auto-detection of the Python version targeted by your
-            project (see `#3124 <https://github.com/psf/black/issues/3124>`_ and
-            `#3219 <https://github.com/psf/black/pull/3219>`_), `since v23.1.0
-            <https://github.com/psf/black/releases/tag/23.1.0>`_.
-
-            But `only looks
-            <https://github.com/psf/black/blob/b0d1fba/src/black/files.py#L141-L142>`_
-            for the `PEP-621's requires-python marker
-            <https://peps.python.org/pep-0621/#requires-python>`_ in the
-            ``pyproject.toml`` file, i.e.:
-
-                .. code-block:: toml
-                    [project]
-                    requires-python = ">=3.8,<3.12"
-
-            Which means we still needs to resolves these Black parameters for
-            Poetry-based projects.
         """
-        if self.project_range:
-            minor_range = sorted(v.value for v in TargetVersion)
-            black_range = (
-                Version.from_parts(major=3, minor=minor) for minor in minor_range
-            )
+        if self.py_target_versions:
             return tuple(
-                f"--target-version py{version.text.replace('.', '')}"
-                for version in black_range
-                if self.project_range.allows(version)
+                f"--target-version {py_target}" for py_target in self.py_target_versions
             )
         return None
 
     @cached_property
-    def ruff_params(self) -> str | None:
-        """Like ``black_params``, but only returns the oldest Python version targeted.
+    def ruff_py_version(self) -> str | None:
+        """Returns the oldest Python version targeted.
 
         .. caution::
 
-            Unlike ``black`` and ``blacken-docs``, `ruff doesn't support multiple
+            Unlike ``blacken-docs``, `ruff doesn't support multiple
             --target-version values
             <https://github.com/astral-sh/ruff/issues/2857#issuecomment-1428100515>`_,
             and `only supports the minimum Python version
             <https://github.com/astral-sh/ruff/issues/2519>`_.
-
-            If it was the case we could have reused ``black_params`` instead of having
-            this dedicated property.
         """
-        if self.black_params:
-            return self.black_params[0]
+        if self.py_target_versions:
+            return self.py_target_versions[0]
         return None
 
     @cached_property
@@ -485,6 +504,45 @@ class Metadata:
             minor = max(minor, PYTHON3_VERSION_MIN[1])
             return f"--python-version {major}.{minor}"
         return None
+
+    @staticmethod
+    def get_current_version() -> str:
+        """Returns the current version as managed by bump-my-version.
+
+        Same as calling the CLI:
+
+            .. code-block:: shell-session
+                $ bump-my-version show current_version
+        """
+        config = get_configuration(find_config_file())
+        config_dict = config.model_dump()
+        return resolve_name(config_dict, "current_version")
+
+    @cached_property
+    def current_version(self) -> str | None:
+        """Returns the current version.
+
+        I.e. the version of the most recent commit.
+        """
+        version = None
+        if self.new_commits_matrix:
+            details = self.new_commits_matrix.get("include")
+            if details:
+                version = details[0].get("current_version")  # type: ignore[union-attr]
+        return version
+
+    @cached_property
+    def released_version(self) -> str | None:
+        """Returns the version of the release commit."""
+        version = None
+        if self.release_commits_matrix:
+            details = self.release_commits_matrix.get("include")
+            if details:
+                # This script is only designed for at most 1 release in the list of new
+                # commits.
+                assert len(details) == 1
+                version = details[0].get("current_version")  # type: ignore[union-attr]
+        return version
 
     @cached_property
     def is_sphinx(self) -> bool:
@@ -538,7 +596,7 @@ class Metadata:
                     "346ce664f055fbd042a25ee0b7e96702e95",
                     "6f27db47612aaee06fdf08744b09a9f5f6c2",
                 ],
-                "os": ["ubuntu-22.04", "macos-12", "windows-2022"],
+                "os": ["ubuntu-22.04", "macos-13", "windows-2022"],
                 "arch": ["x64"],
                 "include": [
                     {
@@ -563,7 +621,7 @@ class Metadata:
                         "extra_python_params": "",
                     },
                     {
-                        "os": "macos-12",
+                        "os": "macos-13",
                         "platform_id": "macos",
                         "extension": "bin",
                         "extra_python_params": "",
@@ -584,7 +642,7 @@ class Metadata:
                     {
                         "entry_point": "mpm",
                         "commit": "346ce664f055fbd042a25ee0b7e96702e95",
-                        "os": "macos-12",
+                        "os": "macos-13",
                         "arch": "x64",
                         "bin_name": "mpm-macos-x64-build-346ce66.bin",
                     },
@@ -605,7 +663,7 @@ class Metadata:
                     {
                         "entry_point": "mpm",
                         "commit": "6f27db47612aaee06fdf08744b09a9f5f6c2",
-                        "os": "macos-12",
+                        "os": "macos-13",
                         "arch": "x64",
                         "bin_name": "mpm-macos-x64-build-6f27db4.bin",
                     },
@@ -623,7 +681,7 @@ class Metadata:
         if not self.script_entries:
             return None
 
-        # In the future, we might support and bridge tha t matrix with the full CPython
+        # In the future, we might support and bridge that matrix with the full CPython
         # platform support list. See target triples at:
         # https://peps.python.org/pep-0011/
         # https://snarky.ca/webassembly-and-its-platform-targets/
@@ -632,7 +690,7 @@ class Metadata:
             # Run the compilation on the latest supported version of each OS.
             "os": [
                 "ubuntu-22.04",
-                "macos-12",
+                "macos-13",
                 "windows-2022",
             ],
             # Arch values are aligned to those specified for self-hosted runners:
@@ -687,7 +745,7 @@ class Metadata:
                 "extra_python_params": "",
             },
             {
-                "os": "macos-12",
+                "os": "macos-13",
                 "platform_id": "macos",
                 "extension": "bin",
                 "extra_python_params": "",
@@ -756,6 +814,39 @@ class Metadata:
 
         return matrix
 
+    @cached_property
+    def release_notes(self) -> str | None:
+        """Generate notes to be attached to the GitHub release."""
+        # Produce the release notes of the release version or the current one.
+        version = self.released_version
+        if not version:
+            version = self.current_version
+        if not version:
+            return None
+
+        # Extract the changelog entry corresponding to the release version, and located
+        # between the first two `##` second-level markdown titles.
+        changes = ""
+        match = re.search(
+            rf"^##(?P<title>.+{escape(version)} .+?)\n(?P<changes>.*?)\n##",
+            Path("./changelog.md").read_text(),
+            flags=re.MULTILINE | re.DOTALL,
+        )
+        if match:
+            changes = match.groupdict().get("changes", "").strip()
+            # Add a title.
+            if changes:
+                changes = "### Changes\n\n" + changes
+
+        # Generate a link to the version of the package published on PyPi.
+        pypi_link = ""
+        if self.package_name:
+            pypi_link = f"[🐍 Available on PyPi](https://pypi.org/project/{
+                                                self.package_name}/{version})."
+
+        # Assemble the release notes.
+        return f"{changes}\n\n{pypi_link}".strip()
+
     @staticmethod
     def format_github_value(value: Any, render_json: bool = False) -> str:
         """Transform Python value to GitHub-friendly, JSON-like, console string.
@@ -809,11 +900,14 @@ class Metadata:
             "doc_files": (self.doc_files, False),
             "is_poetry_project": (self.is_poetry_project, False),
             "package_name": (self.package_name, False),
-            "black_params": (self.black_params, False),
-            "ruff_params": (self.ruff_params, False),
+            "blacken_docs_params": (self.blacken_docs_params, False),
+            "ruff_py_version": (self.ruff_py_version, False),
             "mypy_params": (self.mypy_params, False),
+            "current_version": (self.current_version, False),
+            "released_version": (self.released_version, False),
             "is_sphinx": (self.is_sphinx, False),
             "active_autodoc": (self.active_autodoc, False),
+            "release_notes": (self.release_notes, False),
         }
 
         # Structured metadata to be rendered as JSON.
@@ -828,10 +922,17 @@ class Metadata:
         if self.debug:
             print(f"--- Writing into {self.output_env_file} ---")
         content = ""
-        for name, (value, render_json) in metadata.items():
-            content += (
-                f"{name}={self.format_github_value(value, render_json=render_json)}\n"
-            )
+        for env_name, (value, render_json) in metadata.items():
+            env_value = self.format_github_value(value, render_json=render_json)
+
+            is_multiline = bool(len(env_value.splitlines()) > 1)
+            if not is_multiline:
+                content += f"{env_name}={env_value}\n"
+            else:
+                # Use a random unique delimiter to encode multiline value:
+                delimiter = f"ghadelimiter_{randint(10**8, (10**9) - 1)}"
+                content += f"{env_name}<<{delimiter}\n{env_value}\n{delimiter}\n"
+
         if self.debug:
             print(content)
         if not self.output_env_file:

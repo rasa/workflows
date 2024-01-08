@@ -1,10 +1,46 @@
 # Changelog
 
-## [2.20.10 (unreleased)](https://github.com/kdeldycke/workflows/compare/v2.20.9...main)
+## [2.24.3 (unreleased)](https://github.com/kdeldycke/workflows/compare/v2.24.2...main)
 
 ```{important}
 This version is not released yet and is under active development.
 ```
+
+- Use `macos-13` instead of `macos-12` for Nuitka builds.
+
+## [2.24.2 (2024-01-06)](https://github.com/kdeldycke/workflows/compare/v2.24.1...v2.24.2)
+
+- Use `bump-my-version` to remove admonition in changelog.
+
+## [2.24.1 (2024-01-06)](https://github.com/kdeldycke/workflows/compare/v2.24.0...v2.24.1)
+
+- Expose current and released version in metadata script.
+- Fix fetching of changelog entry for release notes.
+
+## [2.24.0 (2024-01-06)](https://github.com/kdeldycke/workflows/compare/v2.23.0...v2.24.0)
+
+- Add latest changelog entries in GitHub release notes.
+
+## [2.23.0 (2024-01-05)](https://github.com/kdeldycke/workflows/compare/v2.22.0...v2.23.0)
+
+- Produce GitHub release notes dynamiccaly.
+- Augment all commits matrix with current version from `bump-my-version`.
+- Use new artifact features and scripts.
+
+## [2.22.0 (2024-01-05)](https://github.com/kdeldycke/workflows/compare/v2.21.0...v2.22.0)
+
+- Update default file-based labelling rules for new configuration format.
+- Run `autopep8` before `ruff`.
+
+## [2.21.0 (2024-01-04)](https://github.com/kdeldycke/workflows/compare/v2.20.9...v2.21.0)
+
+- Use `ruff` instead of `blacken-docs` to format docstrings inside Python files.
+- Remove dependency on `docformatter`.
+- Only run `ruff` once for autofix and linting. Removes `lint-python` job.
+- Auto-generate local configuration for `ruff` instead of passing parameters.
+- Split generation of Python target version from CLI parameters.
+- Rename `black_params` metadata variable to `blacken_docs_params`.
+- Remove `ruff_params` metadata variable.
 
 ## [2.20.9 (2023-11-13)](https://github.com/kdeldycke/workflows/compare/v2.20.8...v2.20.9)
 

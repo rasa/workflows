@@ -34,8 +34,8 @@ jobs:
     outputs:
       python_files: ${{ steps.project-metadata.outputs.python_files }}
       doc_files: ${{ steps.project-metadata.outputs.doc_files }}
-      black_params: ${{ steps.project-metadata.outputs.black_params }}
-      ruff_params: ${{ steps.project-metadata.outputs.ruff_params }}
+      blacken_docs_params: ${{ steps.project-metadata.outputs.blacken_docs_params }}
+      ruff_py_version: ${{ steps.project-metadata.outputs.ruff_py_version }}
     steps:
       - uses: actions/checkout@v4.1.1
         with:
@@ -43,7 +43,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           # We're going to browse all new commits.
           fetch-depth: 0
-      - uses: actions/setup-python@v4.7.1
+      - uses: actions/setup-python@v5.0.0
         with:
           python-version: "3.12"
           cache: "pip"
@@ -70,36 +70,17 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4.1.1
-      - uses: actions/setup-python@v4.7.1
+      - uses: actions/setup-python@v5.0.0
         with:
           python-version: "3.12"
           cache: "pip"
       - name: Install pip
         run: |
           python -m pip install --upgrade pip
-      - name: Install ruff, blacken-docs, autopep8 and docformatter
+      - name: Install Ruff, blacken-docs and autopep8
         run: >
           python -m pip install --requirement
           https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements.txt
-      - name: Run Ruff check
-        # --preview - Enable preview mode; checks will include unstable rules and fixes.
-        #   See: https://astral.sh/blog/ruff-v0.1.0#introducing-preview-mode
-        # --unsafe-fixes - Include fixes that may not retain the original intent of the code.
-        #   Ruff will be conservative by default, and only apply fixes that are guaranteed to be safe.
-        #   See: https://astral.sh/blog/ruff-v0.1.0#respecting-fix-safety
-        # --ignore=D400 - First line should end with a period.
-        #   Allows docstrings to end up with any punctuation, not just a period.
-        #   See: https://github.com/astral-sh/ruff/issues/1858#issuecomment-1382640623
-        # --ignore=ERA001 - Found commented-out code.
-        #   Do not remove commented code, as it might be used for documentation.
-        #   See: https://docs.astral.sh/ruff/rules/#eradicate-era
-        run: >
-          ruff check --fix-only --output-format=github ${{ needs.project-metadata.outputs.ruff_params }}
-          --preview
-          --unsafe-fixes
-          --ignore=D400
-          --ignore=ERA001
-          .
       - name: Run autopep8
         if: needs.project-metadata.outputs.python_files
         # Ruff is not wrapping comments: https://github.com/astral-sh/ruff/issues/7414
@@ -110,28 +91,78 @@ jobs:
         run: >
           autopep8 --recursive --in-place --max-line-length 88 --select E501 --aggressive
           ${{ needs.project-metadata.outputs.python_files }}
-      - name: Run Ruff format
-        # --target-version has no effect yet, but will be: https://github.com/astral-sh/ruff/pull/8055
+      - name: Optional Ruff config
+        if: needs.project-metadata.outputs.ruff_py_version
         run: |
-          ruff format ${{ needs.project-metadata.outputs.ruff_params }} .
+          cat > ./ruff.toml <<EOF
+
+          target-version = "${{ needs.project-metadata.outputs.ruff_py_version }}"
+
+          EOF
+      - name: Generate Ruff config
+        run: |
+          tee -a ./ruff.toml <<-EOF
+
+          # Extend the pyproject.toml file of the project
+          extend = "./pyproject.toml"
+
+          # Enable preview mode; checks will include unstable rules and fixes.
+          # See: https://astral.sh/blog/ruff-v0.1.0#introducing-preview-mode
+          preview = true
+
+          fix = true
+
+          # Include fixes that may not retain the original intent of the code.
+          # See: https://docs.astral.sh/ruff/linter/#fix-safety
+          unsafe-fixes = true
+
+          # Enumerate all fixed violations.
+          show-fixes = true
+
+          # By default, always show source code snippets.
+          show-source = true
+
+          # D400 - First line should end with a period.
+          #   Allows docstrings to end up with any punctuation, not just a period.
+          #   See: https://github.com/astral-sh/ruff/issues/1858#issuecomment-1382640623
+          # ERA001 - Found commented-out code.
+          #   Do not remove commented code, as it might be used for documentation.
+          #   See: https://docs.astral.sh/ruff/rules/#eradicate-era
+          ignore = ["D400", "ERA001"]
+
+          output-format = "github"
+
+          [format]
+          # Enable reformatting of code snippets in docstrings.
+          # https://docs.astral.sh/ruff/formatter/#docstring-formatting
+          docstring-code-format = true
+
+          EOF
+      - name: Print Ruff config
+        run: |
+          cat ./ruff.toml
+      - name: Run Ruff check
+        run: >
+          ruff check --config ./ruff.toml .
+      - name: Run Ruff format
+        # XXX: Ruff is planning to support linting and formatting in one unified command at one point.
+        # See: https://github.com/astral-sh/ruff/issues/8232
+        run: |
+          ruff format --config ./ruff.toml .
+      - name: Remove temporary Ruff config
+        run: |
+          rm ./ruff.toml
       - name: Run blacken-docs
-        # blacken-docs reuses Black's ``--target-version pyXY`` parameter.
         # Ignore failing command: blacken-docs returns 1 if it finds a file that needs to be reformatted:
         # https://github.com/adamchainz/blacken-docs/blob/79ef671/blacken_docs.py#L207-L211
+        # TODO: replace blacken-docs by ruff. See: https://github.com/astral-sh/ruff/issues/8237
+        # https://github.com/astral-sh/ruff/issues/3792
         run: >
           blacken-docs
           --line-length 88
-          ${{ needs.project-metadata.outputs.black_params }}
-          ${{ needs.project-metadata.outputs.python_files }}
+          ${{ needs.project-metadata.outputs.blacken_docs_params }}
           ${{ needs.project-metadata.outputs.doc_files }}
           || true
-      - name: Run docformatter
-        # Always ignore failing command, as docformatter returns exit code 3 if it finds a file that needs to be
-        # reformatted:
-        # https://github.com/PyCQA/docformatter/issues/157#issuecomment-1402573058
-        # https://github.com/PyCQA/docformatter/commit/f7d50ae
-        run: |
-          docformatter --recursive --in-place --black . || true
       - uses: peter-evans/create-pull-request@v5.0.2
         with:
           assignees: ${{ github.actor }}
@@ -155,7 +186,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4.1.1
-      - uses: actions/setup-python@v4.7.1
+      - uses: actions/setup-python@v5.0.0
         with:
           python-version: "3.12"
           cache: "pip"

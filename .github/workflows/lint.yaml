@@ -23,8 +23,6 @@ jobs:
     outputs:
       python_files: ${{ steps.project-metadata.outputs.python_files }}
       is_poetry_project: ${{ steps.project-metadata.outputs.is_poetry_project }}
-      package_name: ${{ steps.project-metadata.outputs.package_name }}
-      ruff_params: ${{ steps.project-metadata.outputs.ruff_params }}
       mypy_params: ${{ steps.project-metadata.outputs.mypy_params }}
     steps:
       - uses: actions/checkout@v4.1.1
@@ -33,7 +31,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           # We're going to browse all new commits.
           fetch-depth: 0
-      - uses: actions/setup-python@v4.7.1
+      - uses: actions/setup-python@v5.0.0
         with:
           python-version: "3.12"
           cache: "pip"
@@ -52,30 +50,6 @@ jobs:
           python -c "$(curl -fsSL
           https://raw.githubusercontent.com/kdeldycke/workflows/main/.github/metadata.py)"
 
-  lint-python:
-    needs:
-      - project-metadata
-    # Skip linting on prepare-release branch as it points to a tagged URL that does not exist yet.
-    if: github.head_ref != 'prepare-release' && needs.project-metadata.outputs.python_files
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4.1.1
-      - uses: actions/setup-python@v4.7.1
-        with:
-          python-version: "3.12"
-          cache: "pip"
-      - name: Install pip
-        run: |
-          python -m pip install --upgrade pip
-      - name: Install Ruff
-        run: >
-          python -m pip install --requirement
-          https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements.txt
-      - name: Run Ruff
-        # Runs with the default set of rules. Trust ruff to select a sensible subset.
-        run: >
-          ruff check --output-format=github ${{ needs.project-metadata.outputs.ruff_params }} .
-
   lint-python-types:
     needs:
       - project-metadata
@@ -84,7 +58,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4.1.1
-      - uses: actions/setup-python@v4.7.1
+      - uses: actions/setup-python@v5.0.0
         with:
           python-version: "3.12"
           cache: "pip"
@@ -118,7 +92,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4.1.1
-      - uses: actions/setup-python@v4.7.1
+      - uses: actions/setup-python@v5.0.0
         with:
           python-version: "3.12"
           cache: "pip"
@@ -191,15 +165,14 @@ jobs:
     # This was also discussed at: https://github.com/lycheeverse/lychee-action/issues/74#issuecomment-1587089689
     steps:
       - uses: actions/checkout@v4.1.1
-      - uses: lycheeverse/lychee-action@v1.8.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: lycheeverse/lychee-action@v1.9.0
         with:
-          # XXX Skip twitter.com which is blackholing requests from GitHub, and HN because of rate-limiting.
+          # XXX Skip HN because of rate-limiting.
           # See: https://github.com/lycheeverse/lychee/issues/989#issuecomment-1587208730
+          # https://github.com/lycheeverse/lychee/pull/1147
           args: >
-            --exclude twitter.com
             --exclude ycombinator.com
+            --base .
             --verbose
             --no-progress
             './**/*.md' './**/*.html' './**/*.rst'
