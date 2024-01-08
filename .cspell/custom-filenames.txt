@@ -1,5 +1,0 @@
-## cSpell:disable
-## ~/.cspell/custom-filenames.txt
-
-autofix
-autolock

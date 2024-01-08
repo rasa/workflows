@@ -1,4 +1,4 @@
-# dumpvars.ps1
+# debug-vars.ps1
 
 Set-PSDebug -Trace 1
 Write-Output $MyInvocation.MyCommand.Name $args

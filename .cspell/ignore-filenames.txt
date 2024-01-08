@@ -1,0 +1,5 @@
+## cSpell:disable
+## ~/.cspell/ignore-filenames.txt
+
+autolock
+lycheeignore

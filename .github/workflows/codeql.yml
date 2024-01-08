@@ -1,33 +1,22 @@
 ---
+# Copied from: rasa/dotfiles/.github/workflows/codeql.yml
+# EDIT THE ABOVE FILE, NOT THIS COPY, OR YOUR CHANGES WILL BE LOST!
 # $schema https://json.schemastore.org/github-workflow.json
-# ./.github/workflows/codeql.yaml
-
 name: codeql
 
-"on": # quotes required to quiet linter
-  push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
-  schedule:
-    #        ┌───────────── minute (0 - 59)
-    #        │  ┌───────────── hour (0 - 23)
-    #        │  │ ┌───────────── day of the month (1 - 31)
-    #        │  │ │ ┌───────────── month (1 - 12 or JAN-DEC)
-    #        │  │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
-    #        │  │ │ │ │
-    #        │  │ │ │ │
-    #        │  │ │ │ │
-    #        *  * * * *
-    - cron: "30 1 * * 0"
-  workflow_call: # Required so this workflow can be called from another workflow
+on: # yamllint disable-line rule:truthy
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  # push:
+  # branches:
+  #   - main
+  # pull_request:
+  # branches:
+  #   - main
 
 jobs:
-  codeql:
-    name: Analyze
+  job:
     # CodeQL runs on ubuntu-latest, windows-latest, and macos-latest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     permissions:
       # required for all workflows
@@ -37,31 +26,23 @@ jobs:
       actions: read
       contents: read
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [python]
-        
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.1
         with:
           show-progress: false
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2.21.4
+        uses: github/codeql-action/init@v3
         # Override language selection by uncommenting this and choosing your languages
         # with:
         #   languages: go, javascript, csharp, python, cpp, java, ruby
-        with:
-          languages: ${{ matrix.language }}
-          queries: +security-and-quality
-          
+
       # Autobuild attempts to build any compiled languages (C/C++, C#, Go, or Java).
       # If this step fails, then you should remove it and run the build manually (see below).
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v2.21.4
+        uses: github/codeql-action/autobuild@v3
 
       # ℹ️ Command-line programs to run using the OS shell.
       # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
@@ -75,8 +56,8 @@ jobs:
       #     make release
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2.21.4
+        uses: github/codeql-action/analyze@v3
 #
 #
-# cSpell:ignore Autobuild
-# eof
+
+# cSpell:ignore Autobuild, autobuild

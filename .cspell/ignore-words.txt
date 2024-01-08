@@ -1,0 +1,10 @@
+## cSpell:disable
+
+Gnomovision
+Yoyodyne
+
+# Gnomovision:
+#  ./license: text/plain (3x)
+# Yoyodyne:
+#  ./license: text/plain (1x)
+
