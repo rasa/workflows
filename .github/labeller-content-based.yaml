@@ -1,0 +1,39 @@
+---
+"🐛 bug":
+  - "bug"
+  - "error"
+  - "traceback"
+  - "fix"
+  - "exception"
+
+"🆙 changelog":
+  - "change-log"
+  - "changelog"
+
+"🤖 ci":
+  - "ci-cd"
+  - "cicd"
+  - ".github"
+  - "coverage"
+  - "workflow"
+  - "actions"
+  - "gitignore"
+
+"📦 dependencies":
+  - "dependabot"
+  - "poetry.lock"
+  - "poetry"
+  - "pyproject.toml"
+
+"📚 documentation":
+  - "sphinx"
+  - "readme"
+  - "markdown"
+  - "typo"
+  - "docstring"
+  - "mailmap"
+  - "license"
+
+"💖 sponsor":
+  - "sponsor"
+  - "funding"

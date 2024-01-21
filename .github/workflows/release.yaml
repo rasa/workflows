@@ -95,7 +95,7 @@ jobs:
           poetry install --no-interaction
           poetry build --no-interaction
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.2.0
         with:
           name: ${{ github.event.repository.name }}-poetry-build-${{ matrix.short_sha }}
           path: ./dist/*
@@ -156,7 +156,7 @@ jobs:
           --output-filename=${{ matrix.bin_name }}
           ${{ matrix.module_path }}
       - name: Upload binaries
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.2.0
         with:
           name: ${{ matrix.bin_name }}
           if-no-files-found: error
@@ -219,7 +219,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Download build artifacts
-        uses: actions/download-artifact@v4.1.0
+        uses: actions/download-artifact@v4.1.1
         id: download
         with:
           name: ${{ github.event.repository.name }}-poetry-build-${{ matrix.short_sha }}
@@ -246,7 +246,7 @@ jobs:
       - name: Download all artifacts
         # Do not try to fetch build artifacts if any of the job producing them was skipped.
         if: needs.pypi-publish.result != 'skipped' || needs.compile-binaries.result != 'skipped'
-        uses: actions/download-artifact@v4.1.0
+        uses: actions/download-artifact@v4.1.1
         id: artifacts
         with:
           path: release_artifact
