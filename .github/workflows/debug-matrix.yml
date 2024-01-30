@@ -241,7 +241,8 @@ jobs:
         shell: 'cmd /D /E:ON /V:ON /S /C "CALL "{0}""'
         continue-on-error: true
         run: |
-          for %%A in (.github\scripts\debug*.ps1) do "%%~A" "%~fs0" %*
+          echo on
+          for %%A in (.github\scripts\debug*.cmd) do "%%~fA" "%~f0" %*
           exit 0
 
       - if: runner.os == 'Linux'
