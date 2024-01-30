@@ -42,9 +42,11 @@ jobs:
           - ubuntu-latest  # aka ubuntu-22.04
           - windows-latest # aka windows-2022
           - macos-latest   # aka macos-12
-          - macos-13       # beta
+          - macos-13       # 
+          - macos-14       # will be latest in Q2 FY24
           # is this coming?:
-          # - macos-13-arm64 # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-arm64-Readme.md
+          # - macos-13-arm64 # https://github.com/actions/runner-images/tree/main/images/macos/templates
+          # - macos-13-arm64
           # - ubuntu-20.04
           # - windows-2019
           # - macos-11
