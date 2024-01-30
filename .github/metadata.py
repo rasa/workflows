@@ -264,9 +264,12 @@ class Metadata:
             # commit introduced by the pull request.
             end = self.github_context["event"]["pull_request"]["head"]["sha"]
         # Push event.
-        else:
+        elif "before" in self.github_context["event"]:
             start = self.github_context["event"]["before"]
             end = self.github_context["sha"]
+        else:
+            start = ""
+            end = ""
         print("--- Commit range ---")
         print(f"Range start: {start}")
         print(f"Range end: {end}")
@@ -365,7 +368,7 @@ class Metadata:
     def is_poetry_project(self) -> bool:
         """Returns true if project relies on Poetry."""
         if self.pyproject_path.exists() and self.pyproject_path.is_file():
-            return self.pyproject.is_poetry_project()
+            return bool(self.pyproject.is_poetry_project())
         return False
 
     @cached_property
