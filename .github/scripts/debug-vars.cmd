@@ -53,7 +53,7 @@ rem The most recent exit code returned by an external command, as ASCII. (Values
 @rem echo EXEs in PATH (sorted):
 @rem where *.exe
 echo Files in path, sorted by name:
-(for %%A IN ("%Path:;=";"%") do @for %%B in (%%~fsA\*.exe) do @echo %%~nxB %%~dpB (%%~fsB) | sort
+(for /d %%A IN ("%Path:;=";"%") do @for %%B in (%%A\*.exe) do @echo %%~nxB     %%~dpB) sort
 echo.
 
 dir c:\
@@ -62,8 +62,6 @@ dir d:\
 dir "c:\Program Files"
 dir "c:\Program Files (x86)"
 
-exit 0
-@rem hangs on Github?:
 systeminfo.exe
 
 exit 0
