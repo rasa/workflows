@@ -1,60 +1,60 @@
-echo on
-echo Running: %0 %*
-echo.
+@echo on
+@echo Running: %0 %*
+@echo.
 ver
-echo.
-rem See https://ss64.com/nt/setlocal.html
+@echo.
+@rem See https://ss64.com/nt/setlocal.html
 color 00
 setlocal enableextensions
 if %errorlevel% neq 0 echo unable to enable extensions
-echo.
-echo PATH:
+@echo.
+@echo PATH:
 @echo:%path:;= & echo:%
-echo.
-rem See https://ss64.com/nt/syntax-variables.html
-echo __APPDIR__="%__APPDIR__%"
-rem The directory path to the current application .exe, terminated with a trailing backslash. (Global) - discuss
-echo __CD__="%__CD__%"
-rem The current directory, terminated with a trailing backslash. (Global)
-echo =C:="%=C:%"
-rem The current directory of the C: drive. ( See Raymond Chen's explanation of this.)
-echo =D:="%=D:%"
-rem The current directory of the D: drive if drive D: has been accessed in the current CMD session.
-echo DPATH="%DPATH%"
-rem Related to the (deprecated) DPATH command.
-echo FIRMWARE_TYPE="%FIRMWARE_TYPE%"
-rem The boot type of the system: Legacy, UEFI, Not implemented, Unknown Windows 8/2012.
-echo KEYS="%KEYS%"
-rem Related to the (deprecated) KEYS command.
-echo __COMPAT_LAYER="%__COMPAT_LAYER%"
-rem Set the ExecutionLevel to either RunAsInvoker (asInvoker), RunAsHighest(highestAvailable) or RunAsAdmin(requireAdministrator) for more see elevation and Q286705 / Application Compatibility Toolkit for other Compatibility Layers (colours,themes etc).
-echo Executing: cmd /c exit 0
+@echo.
+@rem See https://ss64.com/nt/syntax-variables.html
+@echo __APPDIR__="%__APPDIR__%"
+@rem The directory path to the current application .exe, terminated with a trailing backslash. (Global) - discuss
+@echo __CD__="%__CD__%"
+@rem The current directory, terminated with a trailing backslash. (Global)
+@echo =C:="%=C:%"
+@rem The current directory of the C: drive. ( See Raymond Chen's explanation of this.)
+@echo =D:="%=D:%"
+@rem The current directory of the D: drive if drive D: has been accessed in the current CMD session.
+@echo DPATH="%DPATH%"
+@rem Related to the (deprecated) DPATH command.
+@echo FIRMWARE_TYPE="%FIRMWARE_TYPE%"
+@rem The boot type of the system: Legacy, UEFI, Not implemented, Unknown Windows 8/2012.
+@echo KEYS="%KEYS%"
+@rem Related to the (deprecated) KEYS command.
+@echo __COMPAT_LAYER="%__COMPAT_LAYER%"
+@rem Set the ExecutionLevel to either RunAsInvoker (asInvoker), RunAsHighest(highestAvailable) or RunAsAdmin(requireAdministrator) for more see elevation and Q286705 / Application Compatibility Toolkit for other Compatibility Layers (colours,themes etc).
+@echo Executing: cmd /c exit 0
 cmd /c exit 0
-echo =ExitCode="%=ExitCode%"
-rem The most recent exit code returned by an external command, such as CMD /C EXIT n, converted to hex.
-echo =ExitCodeAscii="%=ExitCodeAscii%"
-rem The most recent exit code returned by an external command, as ASCII. (Values 0-32 do not display because those map to ASCII control codes.)
-echo Executing: cmd /c exit 1
+@echo =ExitCode="%=ExitCode%"
+@rem The most recent exit code returned by an external command, such as CMD /C EXIT n, converted to hex.
+@echo =ExitCodeAscii="%=ExitCodeAscii%"
+@rem The most recent exit code returned by an external command, as ASCII. (Values 0-32 do not display because those map to ASCII control codes.)
+@echo Executing: cmd /c exit 1
 cmd /c exit 1
-echo =ExitCode="%=ExitCode%"
-rem The most recent exit code returned by an external command, such as CMD /C EXIT n, converted to hex.
-echo =ExitCodeAscii="%=ExitCodeAscii%"
-rem The most recent exit code returned by an external command, as ASCII. (Values 0-32 do not display because those map to ASCII control codes.)
-echo Executing: cmd /c exit 33
+@echo =ExitCode="%=ExitCode%"
+@rem The most recent exit code returned by an external command, such as CMD /C EXIT n, converted to hex.
+@echo =ExitCodeAscii="%=ExitCodeAscii%"
+@rem The most recent exit code returned by an external command, as ASCII. (Values 0-32 do not display because those map to ASCII control codes.)
+@echo Executing: cmd /c exit 33
 cmd /c exit 33
-echo =ExitCode="%=ExitCode%"
-rem The most recent exit code returned by an external command, such as CMD /C EXIT n, converted to hex.
-echo =ExitCodeAscii="%=ExitCodeAscii%"
-rem The most recent exit code returned by an external command, as ASCII. (Values 0-32 do not display because those map to ASCII control codes.)
+@echo =ExitCode="%=ExitCode%"
+@rem The most recent exit code returned by an external command, such as CMD /C EXIT n, converted to hex.
+@echo =ExitCodeAscii="%=ExitCodeAscii%"
+@rem The most recent exit code returned by an external command, as ASCII. (Values 0-32 do not display because those map to ASCII control codes.)
 
 @rem echo EXEs in PATH:
 @rem where /t *.exe
 @rem echo.
 @rem echo EXEs in PATH (sorted):
 @rem where *.exe
-echo Files in path, sorted by name:
-(for /d %%A IN ("%Path:;=";"%") do @for %%B in (%%A\*.exe) do @echo %%~nxB     %%~dpB) sort
-echo.
+@echo Files in path, sorted by name:
+(@for /d %%A IN ("%Path:;=";"%") do @for %%B in ("%%~fA\*.exe") do @echo %%~nxB     %%~dpB) | sort
+@echo.
 
 dir c:\
 dir d:\
