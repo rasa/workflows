@@ -178,3 +178,23 @@ nuitka
 pipdeptree
 venvs
 zstandard
+
+# .github/metadata.py
+wcmatch
+DOTGLOB
+GLOBTILDE
+NODIR
+
+# .github/workflows/docs.yaml
+Augustin
+
+# .github/workflows/docs.yaml
+EDITMSG
+locksverify
+
+# ./changelog.md
+# sevearal
+wcmatch
+
+# ./requirements/metadata.txt
+wcmatch
