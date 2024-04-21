@@ -1,16 +1,24 @@
 ---
 name: Docs
 "on":
-  workflow_call:
+  workflow_dispatch:
     inputs:
       download-scripts:
-        type: boolean
-        default: false
+        type: choice
+        default: 'No'
+        options:
+          - 'No'
+          - 'Yes'
+  workflow_call:
+    inputs:
       dependency-graph-output:
         description: 'Location in the repository of the dependency graph image.'
         default: './docs/assets/dependencies.mmd'
         required: false
         type: string
+      download-scripts:
+        type: string
+        default: 'No'
   push:
     branches:
       - main
@@ -120,9 +128,9 @@ jobs:
             **/pyproject.toml
             requirements/*.txt
       - name: Generate .mailmap
-        run: >
+        run: |
           printf 'inputs.download-scripts=%s\n' "${{ inputs.download-scripts }}"
-          if [[ -n "${{ inputs.download-scripts }}" ]]; then
+          if [[ "${{ inputs.download-scripts }}" == "Yes" ]]; then
             curl -fsSL -o '.github/update_mailmap.py' 'https://raw.githubusercontent.com/${{ github.repository }}/main/.github/update_mailmap.py'
           fi
           python .github/update_mailmap.py
