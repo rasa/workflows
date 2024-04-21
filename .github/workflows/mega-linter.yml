@@ -94,7 +94,7 @@ jobs:
     steps:
       # Git Checkout
       - name: Checkout Code
-        uses: actions/checkout@v4.1.2 # was v4, changed by @rasa
+        uses: actions/checkout@v4.1.3 # was v4, changed by @rasa
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
 
@@ -153,7 +153,7 @@ jobs:
 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4.3.1 # changed from v3 by @rasa
+        uses: actions/upload-artifact@v4.3.2 # changed from v3 by @rasa
         if: success() || failure() # changed by @rasa: was ${{ success() }} || ${{ failure() }}
         with:
           name: MegaLinter reports
