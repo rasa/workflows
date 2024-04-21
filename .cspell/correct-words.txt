@@ -14,8 +14,6 @@ docstrings
 # .github/metadata.py
 Deldycke
 elts
-# @todo fix typo:
-lentgth
 mdedup
 nuitka
 Nuitka
