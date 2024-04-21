@@ -48,6 +48,8 @@ for param in ("%aN <%aE>", "%cN <%cE>"):
     if process.returncode:
         sys.exit(process.stderr)
     for line in process.stdout.splitlines():
+        # Skip `rasa <null>` entries. See
+        # https://github.com/rasa/workflows/pull/29/commits/a76d733c
         if line.strip() and " <null>" not in line:
             contributors.add(line)
 
