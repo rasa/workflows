@@ -34,8 +34,8 @@ from textwrap import dedent
 contributors = set()
 
 # Fetch all variations of authors and committers.
-# For format output syntax, see: https://git-scm.com/docs
-#   /pretty-formats#Documentation/pretty-formats.txt-emaNem
+# For format output syntax, see: 
+# https://git-scm.com/docs/pretty-formats
 for param in ("%aN <%aE>", "%cN <%cE>"):
     # pylint: disable=subprocess-run-check
     process = run(
@@ -48,7 +48,7 @@ for param in ("%aN <%aE>", "%cN <%cE>"):
     if process.returncode:
         sys.exit(process.stderr)
     for line in process.stdout.splitlines():
-        if line.strip():
+        if line.strip() and " <null>" not in line:
             contributors.add(line)
 
 # Load-up .mailmap content. Create file if it doesn't exists.
