@@ -38,7 +38,7 @@ contributors = set()
 # https://git-scm.com/docs/pretty-formats
 # pylint: disable=subprocess-run-check
 process = run(
-    ("git", "log", f"--pretty=format:%aN <%aE>%n%cN <%cE>"),
+    ("git", "log", "--pretty=format:%aN <%aE>%n%cN <%cE>"),
     capture_output=True,
     encoding="utf-8",
 )
