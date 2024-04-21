@@ -48,10 +48,15 @@ for param in ("%aN <%aE>", "%cN <%cE>"):
     if process.returncode:
         sys.exit(process.stderr)
     for line in process.stdout.splitlines():
+        # Skip blank lines
+        if not line.strip():
+            continue
         # Skip `rasa <null>` entries. See
         # https://github.com/rasa/workflows/pull/29/commits/a76d733c
-        if line.strip() and " <null>" not in line:
-            contributors.add(line)
+        if "null" in line:
+            continue
+        print(line)
+        contributors.add(line)
 
 # Load-up .mailmap content. Create file if it doesn't exists.
 mailmap_file = Path("./.mailmap").resolve()
