@@ -3,6 +3,9 @@ name: Docs
 "on":
   workflow_call:
     inputs:
+      download-scripts:
+        type: boolean
+        default: false
       dependency-graph-output:
         description: 'Location in the repository of the dependency graph image.'
         default: './docs/assets/dependencies.mmd'
@@ -118,8 +121,11 @@ jobs:
             requirements/*.txt
       - name: Generate .mailmap
         run: >
-          python -c "$(curl -fsSL
-          https://raw.githubusercontent.com/kdeldycke/workflows/main/.github/update_mailmap.py)"
+          printf 'inputs.download-scripts=%s\n' "${{ inputs.download-scripts }}"
+          if [[ -n "${{ inputs.download-scripts }}" ]]; then
+            curl -fsSL -o '.github/update_mailmap.py' 'https://raw.githubusercontent.com/${{ github.repository }}/main/.github/update_mailmap.py'
+          fi
+          python .github/update_mailmap.py
       - uses: peter-evans/create-pull-request@v6.0.2
         with:
           assignees: ${{ github.actor }}
