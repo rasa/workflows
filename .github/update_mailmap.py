@@ -36,29 +36,28 @@ contributors = set()
 # Fetch all variations of authors and committers.
 # For format output syntax, see:
 # https://git-scm.com/docs/pretty-formats
-for param in ("%aN <%aE>", "%cN <%cE>"):
-    # pylint: disable=subprocess-run-check
-    process = run(
-        ("git", "log", f"--pretty=format:{param}"),
-        capture_output=True,
-        encoding="utf-8",
-    )
+# pylint: disable=subprocess-run-check
+process = run(
+    ("git", "log", f"--pretty=format:%aN <%aE>%n%cN <%cE>"),
+    capture_output=True,
+    encoding="utf-8",
+)
 
-    # Parse git CLI output.
-    if process.returncode:
-        sys.exit(process.stderr)
-    for line in process.stdout.splitlines():
-        # Skip blank lines
-        print(line)
-        if not line.strip():
-            print("Skipping empty line")
-            continue
-        # Skip `rasa <null>` entries. See
-        # https://github.com/rasa/workflows/pull/29/commits/a76d733c
-        if "null" in line:
-            print("Skipping line with 'null'")
-            continue
-        contributors.add(line)
+# Parse git CLI output.
+if process.returncode:
+    sys.exit(process.stderr)
+for line in process.stdout.splitlines():
+    # Skip blank lines
+    print(line)
+    if not line.strip():
+        print("Skipping empty line")
+        continue
+    # Skip `rasa <null>` entries. See
+    # https://github.com/rasa/workflows/pull/29/commits/a76d733c
+    if "null" in line:
+        print("Skipping line with 'null'")
+        continue
+    contributors.add(line)
 
 # Load-up .mailmap content. Create file if it doesn't exists.
 mailmap_file = Path("./.mailmap").resolve()
