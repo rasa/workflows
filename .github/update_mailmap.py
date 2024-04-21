@@ -34,7 +34,7 @@ from textwrap import dedent
 contributors = set()
 
 # Fetch all variations of authors and committers.
-# For format output syntax, see: 
+# For format output syntax, see:
 # https://git-scm.com/docs/pretty-formats
 for param in ("%aN <%aE>", "%cN <%cE>"):
     # pylint: disable=subprocess-run-check
