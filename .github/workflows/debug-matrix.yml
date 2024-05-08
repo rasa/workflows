@@ -189,8 +189,8 @@ jobs:
         shell: sh -e -v -x {0}
         continue-on-error: true
         run: |
-          mapfile -t < <(find ./.github/scripts -name 'debug*.sh') || true
-          for script in "${MAPFILE[@]}"; do
+          set -- $(find ./.github/scripts -name 'debug*.sh')
+          for script; do
             "${script}" "$0" "$@" || true
           done
 
@@ -326,7 +326,7 @@ jobs:
             exit 0
           fi
 
-          GET_PIP_URL==https://bootstrap.pypa.io/pip/2.7/get-pip.py
+          GET_PIP_URL=https://bootstrap.pypa.io/pip/2.7/get-pip.py
           curl -s -o get-pip.py "${GET_PIP_URL}"
 
           ${sudo} "${PYTHON}" get-pip.py
