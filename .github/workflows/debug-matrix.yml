@@ -189,6 +189,8 @@ jobs:
         shell: sh -e -v -x {0}
         continue-on-error: true
         run: |
+          IFS=$'\t\n'
+          # shellcheck disable=SC2046 # Quote this to prevent word splitting
           set -- $(find ./.github/scripts -name 'debug*.sh')
           for script; do
             "${script}" "$0" "$@" || true
@@ -199,6 +201,7 @@ jobs:
         # shell: bash
         continue-on-error: true
         run: |
+          IFS=$'\t\n'
           mapfile -t < <(find ./.github/scripts -name 'debug*.bash') || true
           for script in "${MAPFILE[@]}"; do
             "${script}" "$0" "$@" || true
@@ -209,6 +212,7 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
+          IFS=$'\t\n'
           mapfile -t < <(find ./.github/scripts -name 'debug*.bash') || true
           for script in "${MAPFILE[@]}"; do
             "${script}" "$0" "$@" || true
