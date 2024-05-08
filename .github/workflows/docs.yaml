@@ -141,7 +141,7 @@ jobs:
         run: |
           [[ -n "${{ inputs.download-repo }}" ]] &&
             REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
-          python -c "$(curl -fsSL https://raw.githubusercontent.com/${REPO_BRANCH}/main/.github/update_mailmap.py)"
+          python -c "$(curl -fsSL https://raw.githubusercontent.com/${REPO_BRANCH}/.github/update_mailmap.py)"
       - uses: peter-evans/create-pull-request@v6.0.5
         with:
           assignees: ${{ github.actor }}
@@ -219,7 +219,7 @@ jobs:
           uv venv --system
           [[ -n "${{ inputs.download-repo }}" ]] &&
             REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
-          uv pip install -r https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/metadata.txt
+          uv pip install -r https://raw.githubusercontent.com/${REPO_BRANCH}/requirements/metadata.txt
       - name: Project metadata
         id: project-metadata
         env:
@@ -229,7 +229,7 @@ jobs:
           [[ -n "${{ inputs.download-repo }}" ]] &&
             REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
           python -c "$(curl -fsSL
-            https://raw.githubusercontent.com/${REPO_BRANCH}/main/.github/metadata.py)"
+            https://raw.githubusercontent.com/${REPO_BRANCH}/.github/metadata.py)"
 
   update-deps-graph:
     name: Update dependency graph
@@ -254,9 +254,9 @@ jobs:
           [[ -n "${{ inputs.download-repo }}" ]] &&
             REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
           python -m pip install --requirement \
-            https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/pipdeptree.txt \
+            https://raw.githubusercontent.com/${REPO_BRANCH}/requirements/pipdeptree.txt \
             --requirement \
-            https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/build.txt
+            https://raw.githubusercontent.com/${REPO_BRANCH}/requirements/build.txt
       - name: Install project with Poetry
         run: |
           poetry install --only main --no-interaction
@@ -321,7 +321,7 @@ jobs:
           [[ -n "${{ inputs.download-repo }}" ]] &&
             REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
           python -m pip install --requirement \
-            https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/build.txt
+            https://raw.githubusercontent.com/${REPO_BRANCH}/requirements/build.txt
       - name: Install project dependencies
         run: |
           poetry install --no-interaction
@@ -369,7 +369,7 @@ jobs:
           [[ -n "${{ inputs.download-repo }}" ]] &&
             REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
           python -m pip install --requirement \
-            https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/build.txt
+            https://raw.githubusercontent.com/${REPO_BRANCH}/requirements/build.txt
       - name: Install project dependencies
         # Let sphinx-click access project's code to generate CLI help.
         run: |
