@@ -2,6 +2,10 @@
 ## ~/.cspell/correct-words.txt
 ## cSpell dictionary of curated words found in this repository
 
+Dynamiccaly
+incompatility
+precommit
+
 cspellignore
 docstrings
 dumpvars
