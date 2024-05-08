@@ -142,6 +142,7 @@ jobs:
           [[ -n "${{ inputs.download-repo }}" ]] &&
             REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
           python -c "$(curl -fsSL https://raw.githubusercontent.com/${REPO_BRANCH}/main/.github/update_mailmap.py)"
+      - uses: peter-evans/create-pull-request@v6.0.5
         with:
           assignees: ${{ github.actor }}
           commit-message: "[autofix] Update .mailmap"
