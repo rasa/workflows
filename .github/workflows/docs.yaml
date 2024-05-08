@@ -30,6 +30,9 @@ name: Docs
     branches:
       - main
 
+env:
+  REPO_BRANCH: kdeldycke/workflows/main
+
 concurrency:
   # Group workflow jobs so new commits cancels in-progress execution triggered by previous commits.
   # Source: https://mail.python.org/archives/list/pypa-committers@python.org/thread/PCBCQMJF64JGRBOX7E2EE4YLKHT4DI55/
@@ -135,10 +138,10 @@ jobs:
             **/pyproject.toml
             requirements/*.txt
       - name: Generate .mailmap
-        run: >
-          python -c "$(curl -fsSL
-          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/.github/update_mailmap.py)"
-      - uses: peter-evans/create-pull-request@v6.0.5
+        run: |
+          [[ -n "${{ inputs.download-repo }}" ]] &&
+            REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
+          python -c "$(curl -fsSL https://raw.githubusercontent.com/${REPO_BRANCH}/main/.github/update_mailmap.py)"
         with:
           assignees: ${{ github.actor }}
           commit-message: "[autofix] Update .mailmap"
@@ -213,14 +216,19 @@ jobs:
         # uv needs a venv. See: https://github.com/astral-sh/uv/issues/1374
         run: |
           uv venv --system
-          uv pip install -r https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/metadata.txt
+          [[ -n "${{ inputs.download-repo }}" ]] &&
+            REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
+          uv pip install -r https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/metadata.txt
       - name: Project metadata
         id: project-metadata
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: >
-          source .venv/bin/activate && python -c "$(curl -fsSL
-          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/.github/metadata.py)"
+        run: |
+          source .venv/bin/activate || exit
+          [[ -n "${{ inputs.download-repo }}" ]] &&
+            REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
+          python -c "$(curl -fsSL
+            https://raw.githubusercontent.com/${REPO_BRANCH}/main/.github/metadata.py)"
 
   update-deps-graph:
     name: Update dependency graph
@@ -241,11 +249,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
       - name: Install pipdeptree and Poetry on system
-        run: >
-          python -m pip install --requirement
-          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/pipdeptree.txt
-          --requirement
-          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/build.txt
+        run: |
+          [[ -n "${{ inputs.download-repo }}" ]] &&
+            REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
+          python -m pip install --requirement \
+            https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/pipdeptree.txt \
+            --requirement \
+            https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/build.txt
       - name: Install project with Poetry
         run: |
           poetry install --only main --no-interaction
@@ -306,9 +316,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
       - name: Install Poetry
-        run: >
-          python -m pip install --requirement
-          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/build.txt
+        run: |
+          [[ -n "${{ inputs.download-repo }}" ]] &&
+            REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
+          python -m pip install --requirement \
+            https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/build.txt
       - name: Install project dependencies
         run: |
           poetry install --no-interaction
@@ -352,9 +364,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
       - name: Install Poetry
-        run: >
-          python -m pip install --requirement
-          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/build.txt
+        run: |
+          [[ -n "${{ inputs.download-repo }}" ]] &&
+            REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
+          python -m pip install --requirement \
+            https://raw.githubusercontent.com/${REPO_BRANCH}/main/requirements/build.txt
       - name: Install project dependencies
         # Let sphinx-click access project's code to generate CLI help.
         run: |
