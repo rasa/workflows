@@ -8,6 +8,24 @@ name: Docs
         default: './docs/assets/dependencies.mmd'
         required: false
         type: string
+      download-repo:
+        type: string
+        default: 'kdeldycke/workflows'
+      download-branch:
+        type: string
+        default: 'main'
+  workflow_dispatch:
+    inputs:
+      dependency-graph-output:
+        description: 'Location in the repository of the dependency graph image.'
+        default: './docs/assets/dependencies.mmd'
+        type: string
+      download-repo:
+        type: string
+        default: 'kdeldycke/workflows'
+      download-branch:
+        type: string
+        default: 'main'
   push:
     branches:
       - main
@@ -119,7 +137,7 @@ jobs:
       - name: Generate .mailmap
         run: >
           python -c "$(curl -fsSL
-          https://raw.githubusercontent.com/kdeldycke/workflows/main/.github/update_mailmap.py)"
+          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/.github/update_mailmap.py)"
       - uses: peter-evans/create-pull-request@v6.0.5
         with:
           assignees: ${{ github.actor }}
@@ -194,14 +212,14 @@ jobs:
       - name: Install pinned Poetry
         run: |
           uv venv --system
-          uv pip install -r https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/metadata.txt
+          uv pip install -r https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/metadata.txt
       - name: Project metadata
         id: project-metadata
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: >
           source .venv/bin/activate &&
-          python -c "$(curl -fsSL https://raw.githubusercontent.com/kdeldycke/workflows/main/.github/metadata.py)"
+          python -c "$(curl -fsSL https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/.github/metadata.py)"
 
   update-deps-graph:
     name: Update dependency graph
@@ -224,9 +242,9 @@ jobs:
       - name: Install pipdeptree and Poetry on system
         run: >
           python -m pip install --requirement
-          https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/pipdeptree.txt
+          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/pipdeptree.txt
           --requirement
-          https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/build.txt
+          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/build.txt
       - name: Install project with Poetry
         run: |
           poetry install --only main --no-interaction
@@ -285,7 +303,7 @@ jobs:
       - name: Install Poetry
         run: >
           python -m pip install --requirement
-          https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/build.txt
+          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/build.txt
       - name: Install project dependencies
         run: |
           poetry install --with docs --no-interaction
@@ -331,7 +349,7 @@ jobs:
       - name: Install Poetry
         run: >
           python -m pip install --requirement
-          https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/build.txt
+          https://raw.githubusercontent.com/${{ inputs.download-repo }}/${{ inputs.download-branch }}/main/requirements/build.txt
       - name: Install project dependencies
         # Let sphinx-click access project's code to generate CLI help.
         run: |
