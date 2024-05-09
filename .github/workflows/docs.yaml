@@ -228,8 +228,7 @@ jobs:
           source .venv/bin/activate || exit
           [[ -n "${{ inputs.download-repo }}" ]] &&
             REPO_BRANCH="${{ inputs.download-repo }}/${{ inputs.download-branch }}"
-          python -c "$(curl -fsSL
-            https://raw.githubusercontent.com/${REPO_BRANCH}/.github/metadata.py)"
+          python -c "$(curl -fsSL https://raw.githubusercontent.com/${REPO_BRANCH}/.github/metadata.py)"
 
   update-deps-graph:
     name: Update dependency graph
