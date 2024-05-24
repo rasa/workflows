@@ -2,8 +2,11 @@
 ## ~/.cspell/correct-words.txt
 ## cSpell dictionary of curated words found in this repository
 
-Dynamiccaly
-incompatility
+# Changelog.md
+unittests
+
+# Dynamiccaly
+# incompatility
 precommit
 
 cspellignore
