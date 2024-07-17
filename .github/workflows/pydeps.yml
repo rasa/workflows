@@ -1,10 +1,10 @@
 ---
 # Copied from: rasa/dotfiles/.github/workflows/pydeps.yml
 # EDIT THE ABOVE FILE, NOT THIS COPY, OR YOUR CHANGES WILL BE LOST!
+# $schema https://json.schemastore.org/github-workflow.json
 # checkov:skip=CKV_GHA_7:The build output cannot be affected by user parameters
 #   other than the build entry point and the top-level source location.
 #   GitHub Actions workflow_dispatch inputs MUST be empty.
-# $schema https://json.schemastore.org/github-workflow.json
 
 name: pydeps
 
@@ -62,7 +62,7 @@ jobs:
       # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#choosing-github-hosted-runners
       matrix:
         os:
-          - ubuntu-latest # aka ubuntu-22.04
+          - ubuntu-24.04 # was ubuntu-22.04
           # - windows-latest # aka windows-2022
           # - macos-latest # aka macos-12 (macos-13 in beta)
         python-version:
@@ -70,8 +70,8 @@ jobs:
           - "3.11"
           # - "3.12"
     steps:
-      - name: USES actions/checkout@v4.1.2
-        uses: actions/checkout@v4.1.2
+      - name: USES actions/checkout@v4.1.7
+        uses: actions/checkout@v4.1.7
         with:
           show-progress: false
 
@@ -123,9 +123,9 @@ jobs:
           fi
           exit 0
 
-      - name: USES actions/setup-python@v5.0.0
+      - name: USES actions/setup-python@v5.1.1
         if: success()
-        uses: actions/setup-python@v5.0.0
+        uses: actions/setup-python@v5.1.1
         with:
           python-version: ${{ matrix.python-version }}
           # yamllint disable-line rule:line-length
