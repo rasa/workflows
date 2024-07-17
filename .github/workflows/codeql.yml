@@ -16,7 +16,7 @@ on: # yamllint disable-line rule:truthy
 jobs:
   job:
     # CodeQL runs on ubuntu-latest, windows-latest, and macos-latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     permissions:
       # required for all workflows
@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.7
         with:
           show-progress: false
 
