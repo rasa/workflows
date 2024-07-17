@@ -1,0 +1,200 @@
+## cSpell:disable
+## ~/.cspell/correct-words.txt
+## cSpell dictionary of curated words found in this repository
+
+cspellignore
+docstrings
+dumpvars
+kdeldycke
+rasa
+
+# .github/labels.yaml
+docstrings
+
+# .github/metadata.py
+Deldycke
+elts
+# @todo fix typo:
+lentgth
+mdedup
+nuitka
+Nuitka
+pydriller
+seealso
+
+# .github/update_mailmap.py
+Deldycke
+
+#.github/workflows/autofix.yaml
+docstrings
+iname
+jsonlint
+mdformat
+nohup
+visualstudiocode
+
+# .github/workflows/autolock.yaml
+dessant
+
+# .github/workflows/changelog.yaml
+noreply
+
+# .github/workflows/docs.yaml
+apidoc
+autodoc
+calibreapp
+Graphviz
+graphviz
+peaceiris
+pipdeptree
+sobolevn
+
+# .github/workflows/label-sponsors.yaml
+Etco
+
+# .github/workflows/labels.yaml
+julb
+
+# .github/workflows/lint.yaml
+blackholing
+iname
+lycheeverse
+ycombinator
+
+# .github/workflows/release.yaml
+commitish
+ghadelimiter
+globbing
+nofollow
+nuitka
+Nuitka
+nuitka's
+onefile
+oneline
+pypa
+softprops
+tvdias
+zstandard
+
+# .gitignore
+apdisk
+celerybeat
+Connor
+cripts
+Cython
+cython
+dmypy
+donotpresent
+ehthumbs
+elpa
+encryptable
+eshell
+esktop
+Flycheck
+flycheck
+flymake
+fseventsd
+htmlcov
+icns
+ionide
+ipynb
+ipython
+lastdir
+mergetool
+mkdocs
+msix
+nclude
+netrwhist
+Nohup
+nohup
+nosetests
+ocal
+pybuilder
+pyflow
+pypa
+pypackages
+pytype
+pyvenv
+reftex
+ropeproject
+selfcheck
+Sessionx
+Spyder
+spyderproject
+spyproject
+stackdump
+timemachine
+vsix
+webassets
+
+# changelog.md
+admon
+apidoc
+artefacts
+asottile
+autodoc
+autofix
+autofixing
+bumpversion
+calibreapp
+deflist
+docstrings
+executablebooks
+graphviz
+Graphviz
+Graphviz's
+jsonlint
+julb
+mdformat
+mdit
+multine
+Nuitka
+nuitka
+OIDC
+oneliners
+pipdeptree
+pycln
+pyupgrade
+retargetting
+typeshed
+ycombinator
+zstandard
+
+# pyproject.toml
+bumpversion
+
+# readme.md
+Nuitka
+Optimised
+Tabler
+
+# requirements.txt
+admon
+deflist
+frontmatter
+mdformat
+mdit
+nuitka
+pipdeptree
+venvs
+zstandard
+
+# .github/metadata.py
+wcmatch
+DOTGLOB
+GLOBTILDE
+NODIR
+
+# .github/workflows/docs.yaml
+Augustin
+
+# .github/workflows/docs.yaml
+EDITMSG
+locksverify
+
+# ./changelog.md
+# sevearal
+wcmatch
+
+# ./requirements/metadata.txt
+wcmatch
