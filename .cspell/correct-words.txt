@@ -8,14 +8,48 @@ dumpvars
 kdeldycke
 rasa
 
+# ./.github/workflows/tests.yaml:12:56 
+# @TODO FIX TYPO:
+randonmly
+# ./changelog.md:128:65 
+unittests
+# ./changelog.md:1207:9    
+retargeting
+# ./docs/assets/dependencies.mmd:11:5      
+cloup
+# ./gha_utils/cli.py:84:5      
+headerless
+# ./gha_utils/mailmap.py:25:14     
+iterutils
+# ./gha_utils/mailmap.py:72:47     
+maxsplit
+# ./gha_utils/mailmap.py:122:35    
+constributors
+# ./gha_utils/metadata.py:152:10    
+gollum
+# ./gha_utils/metadata.py:283:25    
+reflogs
+# ./gha_utils/metadata.py:296:69    
+unstash
+# ./gha_utils/metadata.py:328:47    
+hexsha
+# ./gha_utils/metadata.py:404:32    
+Unstash
+# ./readme.md:6:4       
+Unittests
+# ./readme.md:8:44      
+ction
+# ./readme.md:8:68      
+itie
+# ./readme.md:78:12     
+furo
+
 # .github/labels.yaml
 docstrings
 
 # .github/metadata.py
 Deldycke
 elts
-# @todo fix typo:
-lentgth
 mdedup
 nuitka
 Nuitka
