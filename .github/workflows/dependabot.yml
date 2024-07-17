@@ -11,12 +11,12 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
       - master # @TODO remove
-  push:
-    branches:
-      - main
-      - master # @TODO remove
-  workflow_call: # Required so this workflow can be called from another workflow
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  # push:
+  #  branches:
+  #    - main
+  #    - master # @TODO remove
+  # workflow_call: # Required so this workflow can be called from another workflow
+  # workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
 concurrency:
   group: ${{ github.workflow }}
@@ -28,13 +28,13 @@ permissions:
 
 jobs:
   job:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # See https://github.com/dependabot/fetch-metadata?tab=readme-ov-file#enabling-auto-merge
-    if: startsWith(github.event.pull_request.user.login, 'dependabot')
+    # if: startsWith(github.event.pull_request.user.login, 'dependabot')
     steps:
       - name: Dependabot metadata
         id: dependabot-metadata
-        uses: dependabot/fetch-metadata@v1.6.0
+        uses: dependabot/fetch-metadata@v2.2.0
 
       - name: Enable auto-merge for Dependabot PRs
         # if: steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch'
@@ -42,3 +42,4 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
