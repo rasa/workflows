@@ -1,8 +1,10 @@
 ---
-# $schema https://json.schemastore.org/github-workflow.json
 # ./.github/workflows/debug-matrix.yaml
-# https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#preinstalled-software
+# Copied from: rasa/dotfiles/.github/debug-matrix.yaml
+# EDIT THE ABOVE FILE, NOT THIS COPY, OR YOUR CHANGES WILL BE LOST!
+# $schema https://json.schemastore.org/github-workflow.json
 # yamllint disable rule:line-length
+# https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#preinstalled-software
 
 name: debug-matrix
 
@@ -40,18 +42,35 @@ jobs:
         os:
           # https://github.com/actions/runner-images/tree/main#available-images
           # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
-          - ubuntu-latest  # aka ubuntu-22.04
-          - windows-latest # aka windows-2022
-          - macos-latest   # aka macos-12
-          - macos-13       # beta
-          # is this coming?:
-          # - macos-13-arm64 # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-arm64-Readme.md
+          # https://github.blog/changelog/2024-05-14-github-hosted-runners-public-beta-of-ubuntu-24-04-is-now-available/
+          # Beta, released 14-May-24:
+          - ubuntu-24.04
+          # aka ubuntu-latest:
+          # - ubuntu-22.04
+          # aka windows-latest:
+          - windows-2022
+          # https://github.blog/changelog/2024-04-01-macos-14-sonoma-is-generally-available-and-the-latest-macos-runner-image/
+          # out of beta 1-Apr-24
+          # aka macos-latest, macos-latest-xlarge or macos-14-xlarge (arm64):
+          - macos-14
+          # aka macos-latest-large (amd64) (NOT FREE):
+          # - macos-14-large
+          # (arm64) (NOT FREE):
+          # - macos-13-xlarge
+          # aka macos-13-large (amd64):
+          # - macos-13
+          # aka macos-12-large (amd64):
+          # - macos-12
+          # Deprecated:
           # - ubuntu-20.04
           # - windows-2019
+          # Disappearing:
+          # https://github.blog/changelog/2024-05-20-actions-upcoming-changes-to-github-hosted-macos-runners/
+          # Will be gone on 28-Jun-24:
           # - macos-11
     steps:
-      - name: USES crazy-max/ghaction-dump-context@v2.2.0
-        uses: crazy-max/ghaction-dump-context@v2.2.0
+      - name: USES crazy-max/ghaction-dump-context@v2.3.0
+        uses: crazy-max/ghaction-dump-context@v2.3.0
 
       - if: runner.os == 'Linux'
         name: List installed apt/snap packages (Linux)
@@ -176,7 +195,7 @@ jobs:
       #     $ConfigFile | ConvertTo-Json | Out-File $SettingsPath -Encoding utf8 -Force
 
       - name: USES actions/checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.7
         with:
           show-progress: false
 
@@ -187,8 +206,9 @@ jobs:
         shell: sh -e -v -x {0}
         continue-on-error: true
         run: |
-          mapfile -t < <(find ./.github/scripts -name 'debug*.sh') || true
-          for script in "${MAPFILE[@]}"; do
+          set +e
+          # shellcheck disable=SC2044 # For loops over find output are fragile. Use find -exec or a while read loop
+          for script in $(find ./.github/scripts -name 'debug*.sh'); do
             "${script}" "$0" "$@" || true
           done
 
@@ -197,6 +217,7 @@ jobs:
         # shell: bash
         continue-on-error: true
         run: |
+          set +e
           mapfile -t < <(find ./.github/scripts -name 'debug*.bash') || true
           for script in "${MAPFILE[@]}"; do
             "${script}" "$0" "$@" || true
@@ -207,6 +228,7 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
+          set +e
           mapfile -t < <(find ./.github/scripts -name 'debug*.bash') || true
           for script in "${MAPFILE[@]}"; do
             "${script}" "$0" "$@" || true
@@ -324,7 +346,7 @@ jobs:
             exit 0
           fi
 
-          GET_PIP_URL==https://bootstrap.pypa.io/pip/2.7/get-pip.py
+          GET_PIP_URL=https://bootstrap.pypa.io/pip/2.7/get-pip.py
           curl -s -o get-pip.py "${GET_PIP_URL}"
 
           ${sudo} "${PYTHON}" get-pip.py
@@ -506,4 +528,4 @@ jobs:
 
 # cSpell:ignore bbwe, choco, innounp, iregex, lessmsi, Minoru, msixbundle
 # cSpell:ignore Noninteractive, noprofile, norc, pkgs, pyversion, regextype, Sekine
-# cSpell:ignore showmanual, wekyb, winget
+# cSpell:ignore showmanual, wekyb, winget, xlarge
