@@ -1,8 +1,8 @@
 ---
 # Copied from: rasa/dotfiles/.github/workflows/clean-logs.yml
 # EDIT THE ABOVE FILE, NOT THIS COPY, OR YOUR CHANGES WILL BE LOST!
-# yamllint disable rule:line-length
 # $schema https://json.schemastore.org/github-workflow.json
+# yamllint disable rule:line-length
 # checkov:skip=CKV_GHA_7:The build output cannot be affected by user parameters
 #   other than the build entry point and the top-level source location.
 #   GitHub Actions workflow_dispatch inputs MUST be empty.
@@ -126,15 +126,19 @@ concurrency:
   # Source: https://mail.python.org/archives/list/pypa-committers@python.org/thread/PCBCQMJF64JGRBOX7E2EE4YLKHT4DI55/
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
 
+permissions: write-all
+
 jobs:
   clean-logs:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       # Was crazy-max/ghaction-dump-context@v2.1.0
       # but it reports a deprecation error:
       # Node.js 16 actions are deprecated. Please update the following actions to use Node.js 20: actions/github-script@v6.
-      - name: rasa/ghaction-dump-context@master
-        uses: rasa/ghaction-dump-context@master
+      # - name: rasa/ghaction-dump-context@master
+      #   uses: rasa/ghaction-dump-context@master
+      - name: USES crazy-max/ghaction-dump-context@v2.3.0
+        uses: crazy-max/ghaction-dump-context@v2.3.0
 
       - name: Scheduled run (github.event_name == 'schedule')
         if: github.event_name == 'schedule'
