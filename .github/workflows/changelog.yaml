@@ -60,6 +60,11 @@ jobs:
       - name: Print version
         run: |
           echo "New version: ${{ steps.get_version.outputs.new_version }}"
+      - name: Reset uv.lock
+        # Exclude `uv.lock` file which might be auto-updated by calls to `uv run`.
+        # See: https://github.com/peter-evans/create-pull-request#controlling-committed-files
+        run: |
+          git checkout -- uv.lock
       - uses: peter-evans/create-pull-request@v6.1.0
         with:
           assignees: ${{ github.actor }}
@@ -195,6 +200,11 @@ jobs:
         # so we can factorize projects' pyproject.toml files to kdeldycke/workflow/pyproject.toml .
         run: |
           uv tool run bump-my-version bump --verbose patch
+      - name: Reset uv.lock
+        # Exclude `uv.lock` file which might be auto-updated by calls to `uv run`.
+        # See: https://github.com/peter-evans/create-pull-request#controlling-committed-files
+        run: |
+          git checkout -- uv.lock
       - name: Commit post-release version bump
         run: |
           git commit --all --message="[changelog] Post-release version bump"
