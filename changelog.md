@@ -1,9 +1,13 @@
 # Changelog
 
-## [4.3.1 (unreleased)](https://github.com/kdeldycke/workflows/compare/v4.3.0...main)
+## [4.3.2 (unreleased)](https://github.com/kdeldycke/workflows/compare/v4.3.1...main)
 
 > \[!IMPORTANT\]
 > This version is not released yet and is under active development.
+
+## [4.3.1 (2024-07-18)](https://github.com/kdeldycke/workflows/compare/v4.3.0...v4.3.1)
+
+- Do not print progress bars on `uv` calls.
 
 ## [4.3.0 (2024-07-17)](https://github.com/kdeldycke/workflows/compare/v4.2.1...v4.3.0)
 
