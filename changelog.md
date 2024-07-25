@@ -1,9 +1,21 @@
 # Changelog
 
-## [4.3.2 (unreleased)](https://github.com/kdeldycke/workflows/compare/v4.3.1...main)
+## [4.3.5 (unreleased)](https://github.com/kdeldycke/workflows/compare/v4.3.4...main)
 
 > \[!IMPORTANT\]
 > This version is not released yet and is under active development.
+
+## [4.3.4 (2024-07-24)](https://github.com/kdeldycke/workflows/compare/v4.3.3...v4.3.4)
+
+- Do not maintain `.mailmap` files on Awesome repositories.
+
+## [4.3.3 (2024-07-24)](https://github.com/kdeldycke/workflows/compare/v4.3.2...v4.3.3)
+
+- Bump `uv` and Nuitka.
+
+## [4.3.2 (2024-07-22)](https://github.com/kdeldycke/workflows/compare/v4.3.1...v4.3.2)
+
+- Always use frozen `uv.lock` file on `uv run` invocation.
 
 ## [4.3.1 (2024-07-18)](https://github.com/kdeldycke/workflows/compare/v4.3.0...v4.3.1)
 
