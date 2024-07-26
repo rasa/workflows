@@ -12,13 +12,14 @@ This repository contains a collection of reusable workflows and its companion CL
 It is designed for `uv`-based Python projects (and Awesome List projects as a bonus).
 
 It takes care of:
+
 - Version bumping
 - Formatting autofix for: Python, Markdown, JSON, typos
 - Linting: Python types with `mypy`, YAML, `zsh`, GitHub actions, links, Awesome lists, secrets
 - Compiling of Python binaries for Linux / macOS / Windows on `x86_64`	& `arm64`
 - Building of Python packages and upload to PyPi
 - Git version tagging and GitHub release creation
-- Synchonization of: `uv.lock`, `.gitignore`, `.mailmap` and Mermaid dependency graph
+- Synchronization of: `uv.lock`, `.gitignore`, `.mailmap` and Mermaid dependency graph
 - Auto-locking of inactive closed issues
 - Static image optimization
 - Sphinx documentation building & deployment, and `autodoc` updates
