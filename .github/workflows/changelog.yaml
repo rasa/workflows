@@ -25,7 +25,7 @@ jobs:
     # This job is not time-sensitive: do not let it to be triggered by schedule event.
     # Also skip release commits (during which bump-my-version cannot find "unreleased" string in changelog.md).
     if: github.event_name != 'schedule' && !startsWith(github.event.head_commit.message, '[changelog] Release v')
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         part:
@@ -33,7 +33,7 @@ jobs:
           - major
     steps:
       - uses: actions/checkout@v4.1.7
-      - uses: actions/setup-python@v5.1.1
+      - uses: actions/setup-python@v5.2.0
         with:
           python-version: "3.12"
           cache: "pip"
@@ -45,24 +45,22 @@ jobs:
         run: |
           python -m pip install -r https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/uv.txt
       - name: Install bump-my-version
-        run: |
-          uv --no-progress venv --system
-          uv --no-progress pip install \
-          --requirement https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/changelog.txt
+        run: >
+          uv tool install --with-requirements
+          https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/bump-my-version.txt bump-my-version
       - name: ${{ matrix.part }} version bump
         # TODO: get configuration URL once https://github.com/callowayproject/bump-my-version/issues/148 is addressed,
         # so we can factorize projects' pyproject.toml files to kdeldycke/workflow/pyproject.toml .
         run: |
-          uv --no-progress tool run -- bump-my-version bump --verbose ${{ matrix.part }}
+          bump-my-version bump --verbose ${{ matrix.part }}
       - name: Extract version
         id: get_version
-        run: >
-          echo "new_version=$( uv --no-progress tool run -- bump-my-version show current_version )"
-          >> "$GITHUB_OUTPUT"
+        run: |
+          echo "new_version=$( bump-my-version show current_version )" >> "$GITHUB_OUTPUT"
       - name: Print version
         run: |
           echo "New version: ${{ steps.get_version.outputs.new_version }}"
-      - uses: peter-evans/create-pull-request@v6.1.0
+      - uses: peter-evans/create-pull-request@v7.0.5
         with:
           assignees: ${{ github.actor }}
           commit-message: >
@@ -101,18 +99,18 @@ jobs:
           base: main
           branch: ${{ matrix.part }}-version-increment
           delete-branch: true
-          draft: true
+          draft: always-true
 
   prepare-release:
     # TODO: add complex time-based trigger condition to only update the changelog once a day on main branch activity to
     # keep the release date in sync.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     # TODO: Use the collection of search and replace patterns from bump-my-version's TOML configuration file.
     # XXX This cannot be done because there is no way to group "replace" actions into a collection. Maybe we should
     # start to discuss this upstream.
     steps:
       - uses: actions/checkout@v4.1.7
-      - uses: actions/setup-python@v5.1.1
+      - uses: actions/setup-python@v5.2.0
         with:
           python-version: "3.12"
           cache: "pip"
@@ -125,14 +123,14 @@ jobs:
           python -m pip install -r https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/uv.txt
       - name: Install bump-my-version and gha-utils
         run: |
-          uv --no-progress venv --system
-          uv --no-progress pip install \
-          --requirement https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/changelog.txt
+          uv tool install --with-requirements \
+          https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/bump-my-version.txt bump-my-version
+          uv tool install --with-requirements \
+          https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/gha-utils.txt gha-utils
       - name: Extract version
         id: get_version
-        run: >
-          echo "current_version=$( uv --no-progress tool run -- bump-my-version show current_version )"
-          >> "$GITHUB_OUTPUT"
+        run: |
+          echo "current_version=$( bump-my-version show current_version )" >> "$GITHUB_OUTPUT"
       - name: Print version
         run: |
           echo "Current version: ${{ steps.get_version.outputs.current_version }}"
@@ -144,29 +142,29 @@ jobs:
         # TOML.
         run: >
           RELEASE_DEFAULT_BRANCH="main" &&
-          uv --no-progress tool run -- bump-my-version replace --no-configured-files --ignore-missing-version
+          bump-my-version replace --no-configured-files --ignore-missing-version
           --search "/workflows/$RELEASE_DEFAULT_BRANCH/"
           --replace "/workflows/v{current_version}/"
           ./.github/workflows/*.yaml
       - name: Set release date in changelog
         run: >
-          uv --no-progress tool run -- bump-my-version replace --no-configured-files
+          bump-my-version replace --no-configured-files
           --search " (unreleased)"
           --replace " ({utcnow:%Y-%m-%d})"
           ./changelog.md
       - name: Update comparison URL in changelog
         run: >
-          uv --no-progress tool run -- bump-my-version replace --no-configured-files
+          bump-my-version replace --no-configured-files
           --search "...main"
           --replace "...v{current_version}"
           ./changelog.md
       - name: Remove first warning message in changelog
         # Matches first occurrence of a multi-line important GFM alert:
-        #   > \[!IMPORTANT\]
+        #   > [!IMPORTANT]
         #   > ...
         run: >
-          uv --no-progress tool run -- bump-my-version replace --no-configured-files --ignore-missing-version
-          --regex --search "^> \\\.\!IMPORTANT\\\..+?\\n\\n"
+          bump-my-version replace --no-configured-files --ignore-missing-version
+          --regex --search "^> \[\!IMPORTANT\].+?\\n\\n"
           --replace ""
           ./changelog.md
       - name: Setup Git
@@ -187,22 +185,22 @@ jobs:
         # TOML.
         run: >
           RELEASE_DEFAULT_BRANCH="main" &&
-          uv --no-progress tool run -- bump-my-version replace --no-configured-files --ignore-missing-version
+          bump-my-version replace --no-configured-files --ignore-missing-version
           --search "/workflows/v{current_version}/"
           --replace "/workflows/$RELEASE_DEFAULT_BRANCH/"
           ./.github/workflows/*.yaml
       - name: Add new changelog entry
         run: |
-          uv --no-progress run --frozen -- gha-utils --verbosity DEBUG changelog ./changelog.md
+          gha-utils --verbosity DEBUG changelog ./changelog.md
       - name: Version bump
         # TODO: get configuration URL once https://github.com/callowayproject/bump-my-version/issues/148 is addressed,
         # so we can factorize projects' pyproject.toml files to kdeldycke/workflow/pyproject.toml .
         run: |
-          uv --no-progress tool run -- bump-my-version bump --verbose patch
+          bump-my-version bump --verbose patch
       - name: Commit post-release version bump
         run: |
           git commit --all --message="[changelog] Post-release version bump"
-      - uses: peter-evans/create-pull-request@v6.1.0
+      - uses: peter-evans/create-pull-request@v7.0.5
         with:
           # We need custom PAT with workflows permission to hard-code version numbers in URLs in
           # .github/workflows/*.yaml files.
@@ -261,4 +259,4 @@ jobs:
           base: main
           branch: prepare-release
           delete-branch: true
-          draft: true
+          draft: always-true

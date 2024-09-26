@@ -1,9 +1,71 @@
 # Changelog
 
-## [4.3.5 (unreleased)](https://github.com/kdeldycke/workflows/compare/v4.3.4...main)
+## [4.6.1 (unreleased)](https://github.com/kdeldycke/workflows/compare/v4.6.0...main)
 
-> \[!IMPORTANT\]
+> [!IMPORTANT]
 > This version is not released yet and is under active development.
+
+## [4.6.0 (2024-09-20)](https://github.com/kdeldycke/workflows/compare/v4.5.4...v4.6.0)
+
+- Use `uv` to build Python packages.
+- Remove dependency on `build` package.
+- Fix coverage report upload.
+- Upload test results to coverage.
+
+## [4.5.4 (2024-09-04)](https://github.com/kdeldycke/workflows/compare/v4.5.3...v4.5.4)
+
+- Rerelease to stabilize changelog updates.
+
+## [4.5.3 (2024-09-04)](https://github.com/kdeldycke/workflows/compare/v4.5.2...v4.5.3)
+
+- Fix changelog indention.
+- Add changelog unittests.
+
+## [4.5.2 (2024-08-26)](https://github.com/kdeldycke/workflows/compare/v4.5.1...v4.5.2)
+
+- Rerelease to fix admonition in changelog.
+- Fix changelog new entry format.
+
+## [4.5.1 (2024-08-25)](https://github.com/kdeldycke/workflows/compare/v4.5.0...v4.5.1)
+
+- Fix over-escaping of `[!IMPORTANT]` admonition in changelog.
+- Fix content writing into output files.
+
+## [4.5.0 (2024-08-24)](https://github.com/kdeldycke/workflows/compare/v4.4.5...v4.5.0)
+
+- Replace `mdformat-black` by `mdformat-ruff`.
+- Install `mdformat`, `gha-utils`, `yamllint`, `bump-my-version`, `ruff`, `blacken-docs` and `autopep8` as a global tool to not interfere with the project dependencies.
+- Fix `mdformat-pelican` compatibility with `mdformat-gfm`.
+- Upgrade job runs from `ubuntu-22.04` to `ubuntu-24.04`.
+- Mark python 3.13-dev tests as stable.
+- Fix empty entry composition.
+- Remove local workaround for Nuitka.
+
+## [4.4.5 (2024-08-18)](https://github.com/kdeldycke/workflows/compare/v4.4.4...v4.4.5)
+
+- Bump `gha-utils` CLI.
+
+## [4.4.4 (2024-08-18)](https://github.com/kdeldycke/workflows/compare/v4.4.3...v4.4.4)
+
+- Fix update of changelog without past entries.
+
+## [4.4.3 (2024-08-12)](https://github.com/kdeldycke/workflows/compare/v4.4.2...v4.4.3)
+
+- Release with relaxed dependencies.
+
+## [4.4.2 (2024-08-02)](https://github.com/kdeldycke/workflows/compare/v4.4.1...v4.4.2)
+
+- Add local workaround for Nuitka to fix bad packaging of `license_expression` package at build time.
+
+## [4.4.1 (2024-08-01)](https://github.com/kdeldycke/workflows/compare/v4.4.0...v4.4.1)
+
+- Bump Nuitka and `uv`.
+
+## [4.4.0 (2024-07-27)](https://github.com/kdeldycke/workflows/compare/v4.3.4...v4.4.0)
+
+- Drop support for Python 3.8.
+- Rely on released version of `mdformat-pelican`.
+- Fix invocation of installed `mdformat` and its plugin.
 
 ## [4.3.4 (2024-07-24)](https://github.com/kdeldycke/workflows/compare/v4.3.3...v4.3.4)
 

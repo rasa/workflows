@@ -19,14 +19,15 @@ from __future__ import annotations
 import logging
 import os
 import sys
-from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
+from typing import IO
 
 from click_extra import (
     Choice,
     Context,
     argument,
+    echo,
     extra_group,
     file_path,
     option,
@@ -40,20 +41,19 @@ from .mailmap import Mailmap
 from .metadata import Dialects, Metadata
 
 
-def is_stdout(filepath):
+def is_stdout(filepath: Path) -> bool:
+    """Check if a file path is set to stdout.
+
+    Prevents the creation of a ``-`` file in the current directory.
+    """
     return str(filepath) == "-"
 
 
-@contextmanager
-def file_writer(filepath):
-    """A context-aware file writer which default to stdout if no path is
-    provided."""
+def prep_path(filepath: Path) -> IO | None:
+    """Prepare the output file parameter for Click's echo function."""
     if is_stdout(filepath):
-        yield sys.stdout
-    else:
-        writer = filepath.open("w")
-        yield writer
-        writer.close()
+        return None
+    return filepath.open("w", encoding="UTF-8")
 
 
 def generate_header(ctx: Context) -> str:
@@ -161,9 +161,7 @@ def metadata(ctx, format, overwrite, output_path):
 
     dialect = Dialects(format)
     content = metadata.dump(dialect=dialect)
-
-    with file_writer(output_path) as f:
-        f.write(content)
+    echo(content, file=prep_path(output_path))
 
 
 @gha_utils.command(short_help="Maintain a Markdown-formatted changelog")
@@ -183,11 +181,11 @@ def changelog(ctx, source, changelog_path):
     initial_content = None
     if source:
         logging.info(f"Read initial changelog from {source}")
-        initial_content = source.read_text(encoding="utf-8")
+        initial_content = source.read_text(encoding="UTF-8")
 
     changelog = Changelog(initial_content)
     content = changelog.update()
-    if not content:
+    if content == initial_content:
         logging.warning("Changelog already up to date. Do nothing.")
         ctx.exit()
 
@@ -195,9 +193,7 @@ def changelog(ctx, source, changelog_path):
         logging.info(f"Print updated results to {sys.stdout.name}")
     else:
         logging.info(f"Save updated results to {changelog_path}")
-
-    with file_writer(changelog_path) as f:
-        f.write(content)
+    echo(content, file=prep_path(changelog_path))
 
 
 @gha_utils.command(short_help="Update Git's .mailmap file with missing contributors")
@@ -245,7 +241,7 @@ def mailmap_sync(ctx, source, create_if_missing, destination_mailmap):
 
     if source.exists():
         logging.info(f"Read initial mapping from {source}")
-        content = remove_header(source.read_text(encoding="utf-8"))
+        content = remove_header(source.read_text(encoding="UTF-8"))
         mailmap.parse(content)
     else:
         logging.debug(f"Mailmap source file {source} does not exists.")
@@ -271,5 +267,4 @@ def mailmap_sync(ctx, source, create_if_missing, destination_mailmap):
             logging.warning("Nothing to update, stop the sync process.")
             ctx.exit()
 
-    with file_writer(destination_mailmap) as f:
-        f.write(generate_header(ctx) + new_content)
+    echo(generate_header(ctx) + new_content, file=prep_path(destination_mailmap))

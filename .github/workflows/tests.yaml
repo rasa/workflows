@@ -23,7 +23,7 @@ jobs:
     # This will became unmaintainable and tedious so we use this job to pre-compute which jobs is going to get our
     # "stable" flag.
     name: "OS/Python/stable matrix pre-compute"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       test_matrix: ${{ steps.create_matrix.outputs.matrix }}
     steps:
@@ -39,15 +39,14 @@ jobs:
           variants: dict[str, set[str]] = {
               "os": {
                   # Available OSes: https://github.com/actions/runner-images#available-images
+                  "ubuntu-24.04",
                   "ubuntu-22.04",
-                  "ubuntu-20.04",
                   "macos-14",
                   "macos-13",
                   "windows-2022",
                   "windows-2019",
               },
               "python-version": {
-                  "3.8",
                   "3.9",
                   "3.10",
                   "3.11",
@@ -62,13 +61,7 @@ jobs:
           exclude: list[dict[str, str]] = []
 
           # List of unstable criterions.
-          unstable: list[dict[str, str]] = [
-              # Python 3.13-dev is not supported yet:
-              #   error: failed to run custom build command for `pyo3-ffi v0.21.2`
-              #   error: the configured Python interpreter version (3.13) is newer than PyO3's
-              #          maximum supported version (3.12)
-              {"python-version": "3.13-dev"},
-          ]
+          unstable: list[dict[str, str]] = []
 
           # Build the job matrix.
           jobs: list[dict[str, str]] = []
@@ -115,7 +108,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.7
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5.1.1
+        uses: actions/setup-python@v5.2.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install uv
@@ -123,8 +116,8 @@ jobs:
           python -m pip install -r https://raw.githubusercontent.com/kdeldycke/workflows/main/requirements/uv.txt
       - name: Install project
         run: |
-          uv --no-progress venv --system
-          uv --no-progress pip install .
+          uv --no-progress venv
+          uv --no-progress sync --extra test
 
       # CLI tests.
       - name: gha-utils --help
@@ -137,8 +130,26 @@ jobs:
         run: |
           uv --no-progress run --frozen -- gha-utils --verbosity INFO metadata
       - name: gha-utils --verbosity INFO changelog
+        # XXX This command fail on Windows as it try to print emojis to the console, from the source changelog:
+        # UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f64f' in position 39913: character maps
+        # to <undefined>
+        if: runner.os != 'Windows'
         run: |
           uv --no-progress run --frozen -- gha-utils --verbosity INFO changelog
       - name: gha-utils --verbosity INFO mailmap-sync
         run: |
           uv --no-progress run --frozen -- gha-utils --verbosity INFO mailmap-sync
+
+      - name: Unittests
+        run: |
+          uv --no-progress run -- pytest
+
+      - name: Codecov - coverage
+        uses: codecov/codecov-action@v4.5.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Codecov - test results
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1.0.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

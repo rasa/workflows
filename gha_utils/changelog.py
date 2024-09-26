@@ -19,6 +19,7 @@ from __future__ import annotations
 import logging
 import re
 import sys
+from functools import cached_property
 from pathlib import Path
 from textwrap import indent
 
@@ -38,10 +39,20 @@ class Changelog:
             self.content = initial_changelog
         logging.debug(f"Initial content set to:\n{self.content}")
 
-    def update(self) -> str | None:
+    @cached_property
+    def current_version(self) -> str | None:
+        # Extract current version as defined by bump-my-version.
+        config_file = Path("./pyproject.toml").resolve()
+        logging.info(f"Open {config_file}")
+        config = tomllib.loads(config_file.read_text(encoding="UTF-8"))
+        current_version = config["tool"]["bumpversion"]["current_version"]
+        logging.info(f"Current version: {current_version}")
+        return current_version if current_version else None
+
+    def update(self) -> str:
         r"""Adds a new empty entry at the top of the changelog.
 
-        Returns ``None`` if initial changelog content has already been updated.
+        Will return the same content as the current changelog if it has already been updated.
 
         This is designed to be used just after a new release has been tagged. And before a
         post-release version increment is applied with a call to:
@@ -69,14 +80,14 @@ class Changelog:
 
         ! ## [2.17.5 (unreleased)](https://github.com/kdeldycke/workflows/compare/v2.17.4...main)
 
-          > \[!IMPORTANT\]
+          > [!IMPORTANT]
           > This version is not released yet and is under active development.
         --- 1,6 ----
           # Changelog
 
         ! ## [2.17.6 (unreleased)](https://github.com/kdeldycke/workflows/compare/v2.17.4...main)
 
-          > \[!IMPORTANT\]
+          > [!IMPORTANT]
           > This version is not released yet and is under active development.
         Would write to config file pyproject.toml:
         *** before pyproject.toml
@@ -98,33 +109,24 @@ class Changelog:
         Would not tag since we are not committing
         ```
         """
-        # Extract current version as defined by bump-my-version.
-        config_file = Path("./pyproject.toml").resolve()
-        logging.info(f"Open {config_file}")
-        config = tomllib.loads(config_file.read_text(encoding="utf-8"))
-        current_version = config["tool"]["bumpversion"]["current_version"]
-        logging.info(f"Current version: {current_version}")
-        assert current_version
-
-        assert current_version in self.content
-
-        # Analyse the current changelog.
+        # Extract parts of the changelog or set default values.
         SECTION_START = "##"
-        changelog_header, last_entry, past_entries = self.content.split(
-            SECTION_START, 2
-        )
+        sections = self.content.split(SECTION_START, 2)
+        changelog_header = sections[0] if len(sections) > 0 else "# Changelog\n\n"
+        current_entry = f"{SECTION_START}{sections[1]}" if len(sections) > 1 else ""
+        past_entries = f"{SECTION_START}{sections[2]}" if len(sections) > 2 else ""
 
         # Derive the release template from the last entry.
         DATE_REGEX = r"\d{4}\-\d{2}\-\d{2}"
         VERSION_REGEX = r"\d+\.\d+\.\d+"
 
         # Replace the release date with the unreleased tag.
-        new_entry = re.sub(DATE_REGEX, "unreleased", last_entry, count=1)
+        new_entry = re.sub(DATE_REGEX, "unreleased", current_entry, count=1)
 
         # Update GitHub's comparison URL to target the main branch.
         new_entry = re.sub(
             rf"v{VERSION_REGEX}\.\.\.v{VERSION_REGEX}",
-            f"v{current_version}...main",
+            f"v{self.current_version}...main",
             new_entry,
             count=1,
         )
@@ -135,21 +137,14 @@ class Changelog:
         new_entry = re.sub(
             r"\n\n.*",
             "\n\n"
-            "> \[!IMPORTANT\]\n"
+            "> [!IMPORTANT]\n"
             "> This version is not released yet and is under active development.\n\n",
             new_entry,
             flags=re.MULTILINE | re.DOTALL,
         )
-
-        # Prefix entries with section marker.
-        new_entry = f"{SECTION_START}{new_entry}"
-        history = f"{SECTION_START}{last_entry}{SECTION_START}{past_entries}"
-
         logging.info("New generated section:\n" + indent(new_entry, " " * 2))
 
-        # No need to update.
-        if new_entry in history:
-            return None
-
-        # Recompose full changelog with new top entry.
-        return f"{changelog_header}{new_entry}{history}"
+        history = current_entry + past_entries
+        if new_entry not in history:
+            history = new_entry + history
+        return (changelog_header + history).rstrip()
