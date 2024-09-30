@@ -11,10 +11,6 @@ rasa
 addopts
 # pyproject.toml:126:8
 junitxml
-# pyproject.toml:129:52 *TYPO*
-resurect
-# readme.md:29:51 *TYPO*
-everytime
 
 # ./.github/workflows/tests.yaml:12:56 
 # @TODO FIX TYPO:
