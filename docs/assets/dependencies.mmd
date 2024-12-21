@@ -12,7 +12,7 @@ flowchart TD
     commentjson["commentjson\n0.9.0"]
     distro["distro\n1.9.0"]
     extra-platforms["extra-platforms\n1.6.0"]
-    gha-utils["gha-utils\n4.8.3"]
+    gha-utils["gha-utils\n4.8.5"]
     gitdb["gitdb\n4.0.11"]
     gitpython["GitPython\n3.1.43"]
     idna["idna\n3.10"]
@@ -23,9 +23,9 @@ flowchart TD
     mergedeep["mergedeep\n1.3.4"]
     packaging["packaging\n24.2"]
     prompt-toolkit["prompt-toolkit\n3.0.36"]
-    pydantic-core["pydantic_core\n2.23.4"]
+    pydantic-core["pydantic_core\n2.27.1"]
     pydantic-settings["pydantic-settings\n2.6.1"]
-    pydantic["pydantic\n2.9.2"]
+    pydantic["pydantic\n2.10.1"]
     pydriller["PyDriller\n2.7"]
     pygments["Pygments\n2.18.0"]
     pyproject-metadata["pyproject-metadata\n0.9.0"]
@@ -80,9 +80,9 @@ flowchart TD
     lizard -- "any" --> pygments
     markdown-it-py -- "~=0.1" --> mdurl
     prompt-toolkit -- "any" --> wcwidth
-    pydantic -- "==2.23.4" --> pydantic-core
+    pydantic -- "==2.27.1" --> pydantic-core
     pydantic -- ">=0.6.0" --> annotated-types
-    pydantic -- ">=4.6.1" --> typing-extensions
+    pydantic -- ">=4.12.2" --> typing-extensions
     pydantic-core -- ">=4.6.0,!=4.7.0" --> typing-extensions
     pydantic-settings -- ">=0.21.0" --> python-dotenv
     pydantic-settings -- ">=2.7.0" --> pydantic
@@ -102,3 +102,4 @@ flowchart TD
     rich-click -- ">=4" --> typing-extensions
     rich-click -- ">=7" --> click_0
     wcmatch -- ">=2.1.1" --> bracex
+
